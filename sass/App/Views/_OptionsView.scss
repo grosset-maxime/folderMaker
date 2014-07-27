@@ -1,0 +1,125 @@
+// ==================
+// App Options View
+// ==================
+
+.ds_options_view {
+    width: 70%;
+    margin: 0 auto;
+    padding-bottom: 100px;
+    position: relative;
+
+    &.flex {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+
+    .title_view {
+        font-weight: bold;
+        font-size: 1.3em;
+        text-align: center;
+        margin-bottom: 20px;
+        padding-bottom: 8px;
+        width: 100%;
+        border-bottom: 1px solid #e6e6e6;
+    }
+
+    .input_spinner {
+        outline: none;
+    }
+
+    .footer_ctn {
+        text-align: center;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 100px;
+    }
+
+    .el_ctn {
+        margin: 8px;
+        line-height: 1em;
+        width: 100%;
+    }
+
+    .title_custom_folder {
+        width: 5.5em;
+    }
+
+    .input_custom_folder {
+        min-width: 100px;
+        max-width: 500px;
+        width: 100%;
+        border-radius: 4px;
+    }
+
+    .clear_custom_folder {
+        margin-left: 5px;
+        padding: 0 8px;
+        cursor: pointer;
+        opacity: 0.5;
+        transition: opacity 0.3s;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    .input_interval,
+    .input_zoom {
+        width: 20px;
+    }
+
+    .title {
+        margin-right: 4px;
+        @include inline-block();
+
+        &.label {
+            cursor: pointer;
+        }
+    }
+
+    .start_btn {
+        width: 80%;
+        font-size: 1.5em;
+        text-align: center;
+        margin: auto;
+    }
+
+    .btn_unselectall {
+        display: none;
+        margin-left: 30px;
+    }
+
+    .nb_selected {
+        display: none;
+        margin-left: 15px;
+        color: #ccc;
+        font-size: 0.8em;
+    }
+
+    .clear_cache_btn {
+        position: absolute;
+        bottom: 6px;
+        right: 20px;
+        color: #f1f1f1;
+        transition: .3s;
+        cursor: pointer;
+        font-size: 0.8em;
+
+        &:hover {
+            color: #ddd;
+        }
+    }
+
+    .selected_custom_folder_ctn {
+        font-size: 0.8em;
+        overflow: auto;
+        min-height: 32px;
+
+        .thumb {
+            margin: 0 6px 6px 0;
+        }
+    }
+} // End .ds_options_view

@@ -1,0 +1,30 @@
+// ===============
+// Base
+// ===============
+
+html, body {
+    height: 100%;
+}
+
+div {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+
+// ===================
+// jQuery UI overrides
+// ===================
+.ui-widget-overlay {
+    z-index: 750;
+}
+.ui-dialog {
+    z-index: 800;
+}
+// End jQuery UI overrides
