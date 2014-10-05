@@ -22,7 +22,7 @@ function ($) {
         var mainCtn;
 
         mainCtn = els.mainCtn = $('<div>', {
-            'class': 'ds_footer_view',
+            'class': 'fm_footer_view',
             html: $('<div>', {
                 'class': 'app_title',
                 text: 'Folder Maker'

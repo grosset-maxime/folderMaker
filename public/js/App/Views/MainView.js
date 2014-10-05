@@ -30,19 +30,19 @@ function ($, HeaderView, FooterView, OptionsView) {
         var mainCtn, loadingCtn;
 
         mainCtn = els.mainCtn = $('<div>', {
-            'class': 'diapo_shuffle flex'
+            'class': 'folder_maker flex'
         });
 
         els.headerCtn = $('<div>', {
-            'class': 'ds_header_ctn flex'
+            'class': 'fm_header_ctn flex'
         }).appendTo(mainCtn);
 
         els.middleCtn = $('<div>', {
-            'class': 'ds_middle_ctn flex'
+            'class': 'fm_middle_ctn flex'
         }).appendTo(mainCtn);
 
         els.footerCtn = $('<div>', {
-            'class': 'ds_footer_ctn flex'
+            'class': 'fm_footer_ctn flex'
         }).appendTo(mainCtn);
 
         // Loading
@@ -71,32 +71,32 @@ function ($, HeaderView, FooterView, OptionsView) {
     /**
      *
      */
-    function attachKeyboardShorcuts () {
-        $(document).on('keydown', function (e) {
-            var keyPressed = e.which,
-                doPreventDefault = false;
+    // function attachKeyboardShorcuts () {
+    //     $(document).on('keydown', function (e) {
+    //         var keyPressed = e.which,
+    //             doPreventDefault = false;
 
-            // console.log(keyPressed);
+    //         // console.log(keyPressed);
 
-            if (doPreventDefault) {
-                e.preventDefault();
-            }
-        });
-    } // End function attachKeyboardShorcuts()
+    //         if (doPreventDefault) {
+    //             e.preventDefault();
+    //         }
+    //     });
+    // } // End function attachKeyboardShorcuts()
 
-    /**
-     *
-     */
-    function showLoading () {
-        els.loadingCtn.show();
-    } // End function showLoading()
+    // /**
+    //  *
+    //  */
+    // function showLoading () {
+    //     els.loadingCtn.show();
+    // } // End function showLoading()
 
-    /**
-     *
-     */
-    function hideLoading () {
-        els.loadingCtn.hide();
-    } // End function hideLoading()
+    // /**
+    //  *
+    //  */
+    // function hideLoading () {
+    //     els.loadingCtn.hide();
+    // } // End function hideLoading()
 
     var View = {
         /**

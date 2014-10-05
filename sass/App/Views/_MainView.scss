@@ -13,22 +13,22 @@ $FOOTER_HEIGHT: 44px;
     min-height: 100%;
 }
 
-.ds_header_ctn,
-.ds_middle_ctn,
-.ds_footer_ctn {
+.fm_header_ctn,
+.fm_middle_ctn,
+.fm_footer_ctn {
     flex: 1;
     align-self: auto;
     min-width: 100%;
 }
 
-.ds_header_ctn {
+.fm_header_ctn {
     order: 1;
     height: $HEADER_HEIGHT;
     min-height: $HEADER_HEIGHT;
     max-height: $HEADER_HEIGHT;
 }
 
-.ds_middle_ctn {
+.fm_middle_ctn {
     order: 2;
     width: 100;
     min-height: 1px;
@@ -36,7 +36,7 @@ $FOOTER_HEIGHT: 44px;
     position: relative;
 }
 
-.ds_footer_ctn {
+.fm_footer_ctn {
     order: 3;
     height: $FOOTER_HEIGHT;
     min-height: $FOOTER_HEIGHT;

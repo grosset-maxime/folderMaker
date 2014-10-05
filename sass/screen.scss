@@ -62,12 +62,11 @@ body {
 
 // App Views
 // ---------
-.diapo_shuffle {
+.folder_maker {
     color: #333;
 
     @import 'App/Views/MainView';
     @import 'App/Views/HeaderView';
     @import 'App/Views/FooterView';
     @import 'App/Views/OptionsView';
-    @import 'App/Views/FolderFinderView';
 }

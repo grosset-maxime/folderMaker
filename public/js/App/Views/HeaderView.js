@@ -22,7 +22,7 @@ function ($) {
         var mainCtn;
 
         mainCtn = els.mainCtn = $('<div>', {
-            'class': 'ds_header_view'
+            'class': 'fm_header_view'
         });
 
         // mainCtn.append(

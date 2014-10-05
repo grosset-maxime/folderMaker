@@ -8,36 +8,30 @@ define(
 
     // PM
     'PM/Core',
-    'PM/Cmp/Notify',
-
-    // App
-    'App/Views/FolderFinderView',
 
     // Non AMD
     'js!jquery-ui'
 ],
-function ($, PM, Notify, FolderFinderView) {
+function ($, PM, FolderFinderView) {
     'use strict';
 
-    var NOTIFY_TYPE_ERROR = Notify.TYPE_ERROR,
-
+    var DEFAULT_NB_FOLDERS = 10,
+        DEFAULT_NB_FILES_PER_FOLDER = 10,
         _defaultOptions = {
             root: null
         },
         _options = {},
         _els = {},
-        _hasFocus = false,
-        _notify = null;
+        _hasFocus = false;
 
     /**
      *
      */
     function buildSkeleton () {
-        var mainCtn, customFolderCtn, selectedCustomFolderCtn,
-            footerCtn, btnStart, inputInterval, btnClearCache,
-            intervalCtn, inputScale, scaleCtn, zoomCtn,
-            inputZoom, pathPicCtn, inputPathPic, btnUnSelectAll,
-            nbSelectedCtn;
+        var mainCtn, customFolderCtn, radioNbFilesPerFolder, radioNbFolders,
+            footerCtn, btnStart, inputNbFilesPerFolder,
+            nbFilesPerFolderCtn, nbFoldersCtn,
+            inputNbFolders;
 
         /**
          * @private
@@ -57,69 +51,12 @@ function ($, PM, Notify, FolderFinderView) {
             }
         } // End function keyUpInput()
 
-        /**
-         * @private
-         */
-        function clearCache () {
-            var xhr,
-                errorMessage = 'Server error while trying to clear cache.';
-
-            /**
-             * @private
-             */
-            function displayNotify (message, type) {
-                if (!_notify) {
-                    _notify = new Notify({
-                        className: 'optionsView_notify',
-                        container: $(document.body),
-                        autoHide: true,
-                        duration: 3
-                    });
-                }
-
-                _notify.setMessage(message, type, true);
-            } // End function displayErrorNotify()
-
-            xhr = $.ajax({
-                url: '/?r=clearCache_s',
-                type: 'POST',
-                dataType: 'json',
-                async: true
-            });
-
-            xhr.done(function (json) {
-                var error;
-
-                if (json.success) {
-
-                    FolderFinderView.clear();
-                    displayNotify('Cache has been cleared successfully.', Notify.TYPE_INFO);
-
-                } else {
-
-                    error = json.error || {};
-                    displayNotify(errorMessage + ' ' + (error.publicMessage || ''), NOTIFY_TYPE_ERROR);
-                    PM.log(error.message || 'Undefined error.');
-
-                }
-            });
-
-            xhr.fail(function (jqXHR, textStatus, errorThrown) {
-                var message = 'OptionsView.clearCache()';
-
-                displayNotify(errorMessage, NOTIFY_TYPE_ERROR);
-
-                PM.logAjaxFail(jqXHR, textStatus, errorThrown, message);
-            });
-        } // End function clearCache()
-
-
         // =================================
         // Start of function buildSkeleton()
         // =================================
 
         mainCtn = _els.mainCtn = $('<div>', {
-            'class': 'window ds_options_view flex',
+            'class': 'window fm_options_view flex',
             html: $('<div>', {
                 'class': 'title_view',
                 'text': 'Options'
@@ -132,47 +69,18 @@ function ($, PM, Notify, FolderFinderView) {
             'class': 'footer_ctn flex'
         });
 
-        // Ctn custom folder
-        // -----------------
-        _els.btnUnSelectAll = btnUnSelectAll = $('<input>', {
-            'class': 'btn btn_unselectall',
-            type: 'button',
-            value: 'Unselect All',
-            on: {
-                click: function () {
-                    FolderFinderView.unSelectAll();
-                }
-            }
-        }).button();
-
-        _els.nbSelectedCtn = nbSelectedCtn = $('<div>', {
-            'class': 'nb_selected'
-        });
-
         customFolderCtn = $('<div>', {
             'class': 'el_ctn flex'
         }).append(
             $('<label>', {
                 'class': 'title title_custom_folder',
-                text: 'Folder(s) :'
+                text: 'Folder :'
             }),
             $('<input>', {
-                'class': 'btn browse_custom_folder_btn',
-                type: 'button',
-                value: 'Browse ...',
-                on: {
-                    click: function () {
-                        FolderFinderView.open();
-                    }
-                }
-            }).button(),
-            btnUnSelectAll,
-            nbSelectedCtn
+                'class': '',
+                type: 'text',
+            })
         );
-
-        selectedCustomFolderCtn = _els.selectedCustomFolderCtn = $('<div>', {
-            'class': 'el_ctn selected_custom_folder_ctn'
-        });
 
         // Btn start
         btnStart = _els.btnStart = $('<input>', {
@@ -184,184 +92,113 @@ function ($, PM, Notify, FolderFinderView) {
             }
         }).button();
 
-        // Input interval
-        inputInterval = _els.inputInterval = $('<input>', {
-            id: 'intervalOpts',
-            'class': 'input_interval input_spinner',
-            // value: DEFAULT_INTERVAL,
-            maxlength: 2,
-            numberFormat: 'n',
-            on: {
-                focus: function () {
-                    _hasFocus = true;
-                },
-                blur: function () {
-                    _hasFocus = false;
-                },
-                keyup: keyUpInput
-            }
-        });
-
-        // Ctn interval
-        intervalCtn = $('<div>', {
-            'class': 'el_ctn'
-        }).append(
-            $('<label>', {
-                'class': 'title label',
-                text: 'Interval (s) :',
-                for: 'intervalOpts'
-            }),
-            inputInterval
-        );
-
-        // Checkbox scale
-        inputScale = _els.inputScale = $('<input>', {
-            id: 'scaleOpts',
+        // Radio nb files per folder.
+        radioNbFilesPerFolder = _els.radioNbFilesPerFolder = $('<input>', {
+            id: 'nbFilesPerFolderRadio',
+            name: 'makerOpts',
             'class': 'input_text',
-            type: 'checkbox',
-            checked: true,
-        });
-
-        // Ctn scale
-        scaleCtn = $('<div>', {
-            'class': 'el_ctn'
-        }).append(
-            inputScale,
-            $('<label>', {
-                'class': 'title label',
-                text: 'Scale',
-                for: 'scaleOpts'
-            })
-        );
-
-        // Spinner Zoom
-        inputZoom = _els.inputZoom = $('<input>', {
-            id: 'zoomOpts',
-            'class': 'input_zoom input_spinner',
-            // value: DEFAULT_ZOOM,
-            step: 0.1,
-            maxlength: 2,
-            numberFormat: 'n',
-            on: {
-                focus: function () {
-                    _hasFocus = true;
-                },
-                blur: function () {
-                    _hasFocus = false;
-                },
-                keyup: keyUpInput
-            }
-        });
-
-        // Ctn Zoom
-        zoomCtn = $('<div>', {
-            'class': 'el_ctn'
-        }).append(
-            $('<label>', {
-                'class': 'title label',
-                text: 'Zoom :',
-                for: 'zoomOpts',
-                on: {
-                    click: function () {
-                        inputZoom.focus();
-                    }
-                }
-            }),
-            inputZoom
-        );
-
-                // Checkbox scale
-        inputPathPic = _els.inputPathPic = $('<input>', {
-            'class': 'input_text',
-            type: 'checkbox',
+            type: 'radio',
             checked: true
         });
 
-        // Ctn scale
-        pathPicCtn = $('<div>', {
-            'class': 'el_ctn'
-        }).append(
-            inputPathPic,
-            $('<span>', {
-                'class': 'title label',
-                text: 'Display path picture',
-                on: {
-                    click: function () {
-                        inputPathPic[0].checked = !inputPathPic[0].checked;
-                    }
-                }
-            })
-        );
-
-        btnClearCache = $('<div>', {
-            'class': 'clear_cache_btn',
-            text: 'Clear cache',
+        // Input nb files per folder.
+        inputNbFilesPerFolder = _els.inputNbFilesPerFolder = $('<input>', {
+            id: 'nbFilesPerFolderOpts',
+            'class': 'input_interval input_spinner',
+            value: DEFAULT_NB_FILES_PER_FOLDER,
+            maxlength: 2,
+            numberFormat: 'n',
             on: {
-                click: clearCache
+                focus: function () {
+                    _hasFocus = true;
+                },
+                blur: function () {
+                    _hasFocus = false;
+                },
+                keyup: keyUpInput
             }
         });
 
+        // Ctn nb files per folder.
+        nbFilesPerFolderCtn = $('<div>', {
+            'class': 'el_ctn'
+        }).append(
+            radioNbFilesPerFolder,
+            $('<label>', {
+                'class': 'title label',
+                text: 'Nb files / folder :',
+                for: 'nbFilesPerFolderOpts'
+            }),
+            inputNbFilesPerFolder
+        );
+
+        // Radio nb folders.
+        radioNbFolders = _els.radioNbFolders = $('<input>', {
+            id: 'nbFoldersRadio',
+            name: 'makerOpts',
+            'class': 'input_text',
+            type: 'radio'
+        });
+
+        // Spinner nb folders.
+        inputNbFolders = _els.inputNbFolders = $('<input>', {
+            id: 'nbFoldersOpts',
+            'class': 'input_zoom input_spinner',
+            value: DEFAULT_NB_FOLDERS,
+            maxlength: 2,
+            numberFormat: 'n',
+            on: {
+                focus: function () {
+                    _hasFocus = true;
+                },
+                blur: function () {
+                    _hasFocus = false;
+                },
+                keyup: keyUpInput
+            }
+        });
+
+        // Ctn nb folders.
+        nbFoldersCtn = $('<div>', {
+            'class': 'el_ctn'
+        }).append(
+            radioNbFolders,
+            $('<label>', {
+                'class': 'title label',
+                text: 'Nb folders :',
+                for: 'nbFoldersOpts',
+                on: {
+                    click: function () {
+                        inputNbFolders.focus();
+                    }
+                }
+            }),
+            inputNbFolders
+        );
+
         footerCtn.append(
-            btnStart,
-            btnClearCache
+            btnStart
         );
 
         mainCtn.append(
             customFolderCtn,
-            selectedCustomFolderCtn,
-            intervalCtn,
-            zoomCtn,
-            scaleCtn,
-            pathPicCtn,
+            nbFilesPerFolderCtn,
+            nbFoldersCtn,
             footerCtn
         );
 
         _options.root.append(mainCtn);
 
-        inputInterval.spinner({
-            min: 1,
-            max: 60
+        inputNbFilesPerFolder.spinner({
+            min: 2,
+            max: 99
         });
 
-        inputZoom.spinner({
-            min: 1,
+        inputNbFolders.spinner({
+            min: 2,
             max: 99
         });
     } // End function buildSkeleton()
-
-    /**
-     *
-     */
-    function onCloseFolderFinder () {
-        var nbCustomFolderSelected = View.getCustomFolders().length,
-            btnUnSelectAll = _els.btnUnSelectAll;
-
-        updateNbCustomFolderSelected();
-
-        if (!nbCustomFolderSelected) {
-            btnUnSelectAll.hide();
-            return;
-        }
-
-        btnUnSelectAll.show();
-    } // End function onCloseFolderFinder()
-
-    /**
-     *
-     */
-    function updateNbCustomFolderSelected () {
-        var nbCustomFolderSelected = View.getCustomFolders().length,
-            nbSelectedCtn = _els.nbSelectedCtn;
-
-        if (!nbCustomFolderSelected) {
-            nbSelectedCtn.hide();
-            return;
-        }
-
-        nbSelectedCtn.text('Selected: ' + nbCustomFolderSelected);
-        nbSelectedCtn.show();
-    } // End function updateNbCustomFolderSelected()
-
 
     var View = {
         /**
@@ -375,17 +212,6 @@ function ($, PM, Notify, FolderFinderView) {
             }
 
             buildSkeleton();
-
-            FolderFinderView.init({
-                root: opts.root,
-                selectedFolderCtn: _els.selectedCustomFolderCtn,
-                events: {
-                    onClose: onCloseFolderFinder,
-                    onNonSelected: onCloseFolderFinder,
-                    onSelect: updateNbCustomFolderSelected,
-                    onUnselect: updateNbCustomFolderSelected
-                }
-            });
         }, // End function init()
 
         /**
@@ -457,13 +283,6 @@ function ($, PM, Notify, FolderFinderView) {
         isPublicPathOn: function () {
             return !!_els.inputPathPic[0].checked;
         }, // End function isPublicPathOn()
-
-        /**
-         *
-         */
-        isFolderFinderOpen: function () {
-            return FolderFinderView.isOpen();
-        } // End function isFolderFinderOpen()
     };
 
     return View;
