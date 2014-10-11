@@ -22,13 +22,19 @@ function ($, PM, Notify) {
      *
      */
     function _createFolders (opts) {
-        var xhr,
-            events = opts.events,
-            onStart = events.onStart,
-            onEnd = events.onEnd;
+        var xhr, events, onStart, onEnd,
+            defaultOptions = {
+                folder: '',
+                nbFolders: '',
+                nbFilesPerFolder: '',
+                events: {
+                    onStart: null,
+                    onEnd: null
+                }
+            };
 
         /**
-         *
+         * @private
          */
         function displayErrorNotify (message, type) {
             if (!_errorNotify) {
@@ -42,6 +48,17 @@ function ($, PM, Notify) {
 
             _errorNotify.setMessage(message, type, true);
         } // End function displayErrorNotify()
+
+
+        // =================================
+        // Start of function createFolders()
+        // =================================
+
+        $.extend(true, opts, defaultOptions, opts || {});
+
+        events = opts.events;
+        onStart = events.onStart;
+        onEnd = events.onEnd;
 
         if ($.isFunction(onStart)) {
             onStart();
