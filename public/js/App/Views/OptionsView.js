@@ -9,10 +9,12 @@ define(
     // PM
     'PM/Core',
 
+    'App/Actions/FolderMakerAction',
+
     // Non AMD
     'js!jquery-ui'
 ],
-function ($, PM, FolderFinderView) {
+function ($, PM, FolderMakerAction) {
     'use strict';
 
     var DEFAULT_NB_FOLDERS = 10,
@@ -27,7 +29,7 @@ function ($, PM, FolderFinderView) {
     /**
      *
      */
-    function buildSkeleton () {
+    function _buildSkeleton () {
         var mainCtn, customFolderCtn, radioNbFilesPerFolder, radioNbFolders,
             footerCtn, btnStart, inputNbFilesPerFolder,
             nbFilesPerFolderCtn, nbFoldersCtn,
@@ -50,6 +52,7 @@ function ($, PM, FolderFinderView) {
                 e.preventDefault();
             }
         } // End function keyUpInput()
+
 
         // =================================
         // Start of function buildSkeleton()
@@ -88,7 +91,9 @@ function ($, PM, FolderFinderView) {
             type: 'button',
             value: 'Start',
             on: {
-                click: null
+                click: function () {
+                    _start();
+                }
             }
         }).button();
 
@@ -198,7 +203,19 @@ function ($, PM, FolderFinderView) {
             min: 2,
             max: 99
         });
-    } // End function buildSkeleton()
+    } // End function _buildSkeleton()
+
+    /**
+     *
+     */
+    function _start () {
+        FolderMakerAction.start({
+            folder: '/Users/max/testsFolderMaker',
+            nbFilesPerFolder: 10,
+            nbFolders: 10
+        });
+    } // End function _start()
+
 
     var View = {
         /**
@@ -211,7 +228,7 @@ function ($, PM, FolderFinderView) {
                 _options.root = $(document.body);
             }
 
-            buildSkeleton();
+            _buildSkeleton();
         }, // End function init()
 
         /**
@@ -224,65 +241,9 @@ function ($, PM, FolderFinderView) {
         /**
          *
          */
-        getTimeInterval: function () {
-            var inputInterval = _els.inputInterval,
-                interval = inputInterval.spinner('value');
-
-            inputInterval.spinner('value', interval);
-
-            return interval;
-        }, // End function getTimeInterval()
-
-        /**
-         *
-         */
-        getZoom: function () {
-            var inputZoom = _els.inputZoom,
-                zoom = inputZoom.spinner('value');
-
-            inputZoom.spinner('value', zoom);
-
-            return zoom;
-        }, // End function getZoom()
-
-        /**
-         *
-         */
-        getCustomFolders: function () {
-            return FolderFinderView.getSelectedPath();
-        }, // End function getCustomFolders()
-
-        /**
-         *
-         */
-        toggleFolderFinder: function () {
-            if (FolderFinderView.isOpen()) {
-                FolderFinderView.close();
-            } else {
-                FolderFinderView.open();
-            }
-        }, // End function toggleFolderFinder()
-
-        /**
-         *
-         */
-        closeFolderFinder: function () {
-            FolderFinderView.close();
-        }, // End function closeFolderFinder()
-
-        /**
-         *
-         */
-        isScaleOn: function () {
-            return !!_els.inputScale[0].checked;
-        }, // End function getScale()
-
-        /**
-         *
-         */
-        isPublicPathOn: function () {
-            return !!_els.inputPathPic[0].checked;
-        }, // End function isPublicPathOn()
+        start: function () {
+            _start();
+        } // End function start()
     };
 
     return View;
