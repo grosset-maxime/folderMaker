@@ -71,18 +71,26 @@ function ($, HeaderView, FooterView, OptionsView) {
     /**
      *
      */
-    // function attachKeyboardShorcuts () {
-    //     $(document).on('keydown', function (e) {
-    //         var keyPressed = e.which,
-    //             doPreventDefault = false;
+    function attachKeyboardShorcuts () {
+        $(document).on('keydown', function (e) {
+            var keyPressed = e.which,
+                doPreventDefault = false;
 
-    //         // console.log(keyPressed);
+            // console.log(keyPressed);
 
-    //         if (doPreventDefault) {
-    //             e.preventDefault();
-    //         }
-    //     });
-    // } // End function attachKeyboardShorcuts()
+            switch (keyPressed) {
+            case 13: // Enter
+            case 32: // SPACE
+                OptionsView.start();
+                doPreventDefault = true;
+                break;
+            }
+
+            if (doPreventDefault) {
+                e.preventDefault();
+            }
+        });
+    } // End function attachKeyboardShorcuts()
 
     // /**
     //  *
@@ -125,6 +133,8 @@ function ($, HeaderView, FooterView, OptionsView) {
             OptionsView.init({
                 root: els.middleCtn
             });
+
+            attachKeyboardShorcuts();
         }
     };
 

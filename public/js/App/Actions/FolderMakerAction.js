@@ -54,7 +54,7 @@ function ($, PM, Notify) {
         // Start of function createFolders()
         // =================================
 
-        $.extend(true, opts, defaultOptions, opts || {});
+        opts = $.extend(true, {}, defaultOptions, opts || {});
 
         events = opts.events;
         onStart = events.onStart;
@@ -94,8 +94,6 @@ function ($, PM, Notify) {
                 return;
             }
 
-            _isDisabled = false;
-
             if ($.isFunction(onEnd)) {
                 onEnd(json);
             }
@@ -107,6 +105,10 @@ function ($, PM, Notify) {
             displayErrorNotify('Server error.', NOTIFY_TYPE_ERROR);
 
             PM.logAjaxFail(jqXHR, textStatus, errorThrown, message);
+        });
+
+        xhr.always(function () {
+            _isDisabled = false;
         });
     } // End function _createFolders()
 
