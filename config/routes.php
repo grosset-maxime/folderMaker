@@ -32,7 +32,10 @@ $_routes += array(
 // API - Scripts
 // -------------
 $_routes += array(
-
+    'createFolder_s' => array(
+        'isScript' => true,
+        'path' => '/api/script/createFolder_json.php',
+    ),
 );
 
 // Static - Views - Errors

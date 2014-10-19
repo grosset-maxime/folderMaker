@@ -65,7 +65,7 @@ function ($, PM, Notify) {
         }
 
         xhr = $.ajax({
-            url: '/?r=createFolders_s',
+            url: '/?r=createFolder_s',
             type: 'POST',
             dataType: 'json',
             async: true,
@@ -93,6 +93,8 @@ function ($, PM, Notify) {
 
                 return;
             }
+
+            PM.log('nb created folders = ' + json.nbCreatedFolders);
 
             if ($.isFunction(onEnd)) {
                 onEnd(json);

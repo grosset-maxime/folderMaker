@@ -16,46 +16,56 @@
     ROOT_DIR,
 */
 
-require_once ROOT_DIR . '/api/class/RandomPic/RandomPic.class.php';
+require_once ROOT_DIR . '/api/class/FolderMaker/CreateFolder.class.php';
 require_once ROOT_DIR . '/api/class/ExceptionExtended.class.php';
 
 // DS
 use DS\ExceptionExtended;
 
-// RandomPic
-use RandomPic\RandomPic;
+// FolderMaker
+use FolderMaker\CreateFolder;
 
 
 // Init vars.
-$customFolders;
+$folder;
+$nbFilesPerFolder;
+$nbFolders;
 $logError;
 $jsonResult;
-$RandomPic; // Instance of RandomPic class.
+$CreateFolder; // Instance of CreateFolder class.
 
 
-$customFolders = !empty($_POST['customFolders']) ? $_POST['customFolders'] : array();
+$folder = !empty($_POST['folder']) ? $_POST['folder'] : '';
+$nbFilesPerFolder = !empty($_POST['nbFilesPerFolder']) ? $_POST['nbFilesPerFolder'] : 0;
+$nbFolders = !empty($_POST['nbFolders']) ? $_POST['nbFolders'] : 0;
 
 $logError = array(
     'mandatory_fields' => array(
+        'folder' => '= ' . $folder
     ),
     'optional_fields' => array(
-        'customFolders' => '= ' . implode(' - ', $customFolders)
+        'nbFilesPerFolder' => '= ' . $nbFilesPerFolder,
+        'nbFolders' => '= ' . $nbFolders
     ),
 );
 
 $jsonResult = array(
     'success' => false,
-    'pic' => array(),
+    'nbCreatedFolders' => 0
 );
 
 
 try {
 
-    $RandomPic = new RandomPic(
-        array('customFolders' => $customFolders)
+    $CreateFolder = new CreateFolder(
+        array(
+            'folder' => $folder,
+            'nbFilesPerFolder' => $nbFilesPerFolder,
+            'nbFolders' => $nbFolders
+        )
     );
 
-    $jsonResult['pic'] = $RandomPic->getRandomPic();
+    $jsonResult['nbCreatedFolders'] = $CreateFolder->start();
 
 } catch (ExceptionExtended $e) {
     $jsonResult['error'] = $logError;
