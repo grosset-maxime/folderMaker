@@ -31,7 +31,7 @@ function ($, PM, FolderMakerAction) {
      */
     function _buildSkeleton () {
         var mainCtn, customFolderCtn, radioNbFilesPerFolder, radioNbFolders,
-            footerCtn, btnStart, inputNbFilesPerFolder,
+            footerCtn, btnStart, inputNbFilesPerFolder, inputCustomFolder,
             nbFilesPerFolderCtn, nbFoldersCtn,
             inputNbFolders;
 
@@ -72,6 +72,11 @@ function ($, PM, FolderMakerAction) {
             'class': 'footer_ctn flex'
         });
 
+        inputCustomFolder = _els.inputCustomFolder = $('<input>', {
+            'class': '',
+            type: 'text',
+        });
+
         customFolderCtn = $('<div>', {
             'class': 'el_ctn flex'
         }).append(
@@ -79,10 +84,7 @@ function ($, PM, FolderMakerAction) {
                 'class': 'title title_custom_folder',
                 text: 'Folder :'
             }),
-            $('<input>', {
-                'class': '',
-                type: 'text',
-            })
+            inputCustomFolder
         );
 
         // Btn start
@@ -209,10 +211,25 @@ function ($, PM, FolderMakerAction) {
      *
      */
     function _start () {
+        var nbFilesPerFolder = 0,
+            nbFolders = 0,
+            folder = _els.inputCustomFolder.val();
+
+        if (!$.trim(folder)) {
+            // Display notif.
+            return;
+        }
+
+        if (_els.radioNbFilesPerFolder.is(':checked')) {
+            nbFilesPerFolder = _els.inputNbFilesPerFolder.val();
+        } else {
+            nbFolders = _els.inputNbFolders.val();
+        }
+
         FolderMakerAction.start({
             folder: '/Users/max/testsFolderMaker',
-            nbFilesPerFolder: 10,
-            nbFolders: 10
+            nbFilesPerFolder: nbFilesPerFolder,
+            nbFolders: nbFolders
         });
     } // End function _start()
 
@@ -243,7 +260,9 @@ function ($, PM, FolderMakerAction) {
          */
         start: function () {
             _start();
-        } // End function start()
+        }, // End function start()
+
+
     };
 
     return View;
