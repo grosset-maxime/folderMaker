@@ -32,6 +32,7 @@ $nbFilesPerFolder;
 $nbFolders;
 $logError;
 $jsonResult;
+$result;
 $CreateFolder; // Instance of CreateFolder class.
 
 
@@ -65,7 +66,9 @@ try {
         )
     );
 
-    $jsonResult['nbCreatedFolders'] = $CreateFolder->start();
+    $result = $CreateFolder->start();
+    $jsonResult['nbFolders'] = $result['nbFolders'];
+    $jsonResult['nbFilesPerFolder'] = $result['nbFilesPerFolder'];
 
 } catch (ExceptionExtended $e) {
     $jsonResult['error'] = $logError;

@@ -94,7 +94,8 @@ function ($, PM, Notify) {
                 return;
             }
 
-            PM.log('nb created folders = ' + json.nbCreatedFolders);
+            PM.log('nb created folders = ' + json.nbFolders);
+            PM.log('nb files per folder = ' + json.nbFilesPerFolder);
 
             if ($.isFunction(onEnd)) {
                 onEnd(json);
