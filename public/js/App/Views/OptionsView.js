@@ -73,7 +73,8 @@ function ($, PM, FolderMakerAction) {
         });
 
         inputCustomFolder = _els.inputCustomFolder = $('<input>', {
-            'class': '',
+            'class': 'input_folder',
+            placeholder: 'Enter your path folder.',
             type: 'text',
         });
 
@@ -103,7 +104,7 @@ function ($, PM, FolderMakerAction) {
         radioNbFilesPerFolder = _els.radioNbFilesPerFolder = $('<input>', {
             id: 'nbFilesPerFolderRadio',
             name: 'makerOpts',
-            'class': 'input_text',
+            'class': 'input_radio input_radio_nbFilesPerFolder',
             type: 'radio',
             checked: true
         });
@@ -111,13 +112,14 @@ function ($, PM, FolderMakerAction) {
         // Input nb files per folder.
         inputNbFilesPerFolder = _els.inputNbFilesPerFolder = $('<input>', {
             id: 'nbFilesPerFolderOpts',
-            'class': 'input_interval input_spinner',
+            'class': 'input_nbFilesPerFolder input_spinner',
             value: DEFAULT_NB_FILES_PER_FOLDER,
             maxlength: 2,
             numberFormat: 'n',
             on: {
                 focus: function () {
                     _hasFocus = true;
+                    radioNbFilesPerFolder.prop('checked', true);
                 },
                 blur: function () {
                     _hasFocus = false;
@@ -134,7 +136,12 @@ function ($, PM, FolderMakerAction) {
             $('<label>', {
                 'class': 'title label',
                 text: 'Nb files / folder :',
-                for: 'nbFilesPerFolderOpts'
+                for: 'nbFilesPerFolderOpts',
+                on: {
+                    click: function () {
+                        radioNbFilesPerFolder.prop('checked', true);
+                    }
+                }
             }),
             inputNbFilesPerFolder
         );
@@ -143,20 +150,21 @@ function ($, PM, FolderMakerAction) {
         radioNbFolders = _els.radioNbFolders = $('<input>', {
             id: 'nbFoldersRadio',
             name: 'makerOpts',
-            'class': 'input_text',
+            'class': 'input_radio input_radio_nbFolders',
             type: 'radio'
         });
 
         // Spinner nb folders.
         inputNbFolders = _els.inputNbFolders = $('<input>', {
             id: 'nbFoldersOpts',
-            'class': 'input_zoom input_spinner',
+            'class': 'input_nbFolders input_spinner',
             value: DEFAULT_NB_FOLDERS,
             maxlength: 2,
             numberFormat: 'n',
             on: {
                 focus: function () {
                     _hasFocus = true;
+                    radioNbFolders.prop('checked', true);
                 },
                 blur: function () {
                     _hasFocus = false;
@@ -176,7 +184,7 @@ function ($, PM, FolderMakerAction) {
                 for: 'nbFoldersOpts',
                 on: {
                     click: function () {
-                        inputNbFolders.focus();
+                        radioNbFolders.prop('checked', true);
                     }
                 }
             }),
@@ -229,7 +237,12 @@ function ($, PM, FolderMakerAction) {
         FolderMakerAction.start({
             folder: folder,
             nbFilesPerFolder: nbFilesPerFolder,
-            nbFolders: nbFolders
+            nbFolders: nbFolders,
+            events: {
+                onEnd: function () {
+                    _els.inputCustomFolder.val('');
+                }
+            }
         });
     } // End function _start()
 

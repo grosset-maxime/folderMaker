@@ -47,28 +47,22 @@
         width: 5.5em;
     }
 
-    .input_custom_folder {
-        min-width: 100px;
-        max-width: 500px;
-        width: 100%;
+    .input_folder {
+        width: 80%;
         border-radius: 4px;
+        margin-left: -20px;
+        height: 26px;
+        border: 1px solid #ddd;
+        outline: none;
+        padding-left: 8px;
     }
 
-    .clear_custom_folder {
-        margin-left: 5px;
-        padding: 0 8px;
-        cursor: pointer;
-        opacity: 0.5;
-        transition: opacity 0.3s;
-
-        &:hover {
-            opacity: 1;
-        }
-    }
-
-    .input_interval,
-    .input_zoom {
+    .input_spinner {
         width: 20px;
+    }
+
+    .input_radio {
+        margin-right: 12px;
     }
 
     .title {

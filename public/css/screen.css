@@ -427,30 +427,24 @@ body {
   width: 5.5em;
 }
 /* line 50, ../../sass/App/Views/_OptionsView.scss */
-.folder_maker .fm_options_view .input_custom_folder {
-  min-width: 100px;
-  max-width: 500px;
-  width: 100%;
+.folder_maker .fm_options_view .input_folder {
+  width: 80%;
   border-radius: 4px;
+  margin-left: -20px;
+  height: 26px;
+  border: 1px solid #ddd;
+  outline: none;
+  padding-left: 8px;
 }
-/* line 57, ../../sass/App/Views/_OptionsView.scss */
-.folder_maker .fm_options_view .clear_custom_folder {
-  margin-left: 5px;
-  padding: 0 8px;
-  cursor: pointer;
-  opacity: 0.5;
-  transition: opacity 0.3s;
-}
-/* line 64, ../../sass/App/Views/_OptionsView.scss */
-.folder_maker .fm_options_view .clear_custom_folder:hover {
-  opacity: 1;
-}
-/* line 70, ../../sass/App/Views/_OptionsView.scss */
-.folder_maker .fm_options_view .input_interval,
-.folder_maker .fm_options_view .input_zoom {
+/* line 60, ../../sass/App/Views/_OptionsView.scss */
+.folder_maker .fm_options_view .input_spinner {
   width: 20px;
 }
-/* line 74, ../../sass/App/Views/_OptionsView.scss */
+/* line 64, ../../sass/App/Views/_OptionsView.scss */
+.folder_maker .fm_options_view .input_radio {
+  margin-right: 12px;
+}
+/* line 68, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .title {
   margin-right: 4px;
   display: -moz-inline-stack;
@@ -460,30 +454,30 @@ body {
   zoom: 1;
   *display: inline;
 }
-/* line 78, ../../sass/App/Views/_OptionsView.scss */
+/* line 72, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .title.label {
   cursor: pointer;
 }
-/* line 83, ../../sass/App/Views/_OptionsView.scss */
+/* line 77, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .start_btn {
   width: 80%;
   font-size: 1.5em;
   text-align: center;
   margin: auto;
 }
-/* line 90, ../../sass/App/Views/_OptionsView.scss */
+/* line 84, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .btn_unselectall {
   display: none;
   margin-left: 30px;
 }
-/* line 95, ../../sass/App/Views/_OptionsView.scss */
+/* line 89, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .nb_selected {
   display: none;
   margin-left: 15px;
   color: #ccc;
   font-size: 0.8em;
 }
-/* line 102, ../../sass/App/Views/_OptionsView.scss */
+/* line 96, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .clear_cache_btn {
   position: absolute;
   bottom: 6px;
@@ -493,17 +487,17 @@ body {
   cursor: pointer;
   font-size: 0.8em;
 }
-/* line 111, ../../sass/App/Views/_OptionsView.scss */
+/* line 105, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .clear_cache_btn:hover {
   color: #ddd;
 }
-/* line 116, ../../sass/App/Views/_OptionsView.scss */
+/* line 110, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .selected_custom_folder_ctn {
   font-size: 0.8em;
   overflow: auto;
   min-height: 32px;
 }
-/* line 121, ../../sass/App/Views/_OptionsView.scss */
+/* line 115, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .selected_custom_folder_ctn .thumb {
   margin: 0 6px 6px 0;
 }
