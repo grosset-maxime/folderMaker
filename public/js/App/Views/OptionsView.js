@@ -227,7 +227,7 @@ function ($, PM, FolderMakerAction) {
         }
 
         FolderMakerAction.start({
-            folder: '/Users/max/testsFolderMaker',
+            folder: folder,
             nbFilesPerFolder: nbFilesPerFolder,
             nbFolders: nbFolders
         });
