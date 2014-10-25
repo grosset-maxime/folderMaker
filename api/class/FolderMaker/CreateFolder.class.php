@@ -178,6 +178,8 @@ class CreateFolder extends Root
         $newPathFileName;
 
         for ($i = 0, $u = 0, $a = 1; $i < $nbFiles; $i++, $a++) {
+            set_time_limit(30);
+
             $file = $files[$i];
             $folder = $folders[$u];
 
@@ -224,6 +226,8 @@ class CreateFolder extends Root
 
 
         for ($i = 0; $i < $nbFolders; $i++, $indiceFolder++) {
+            set_time_limit(30);
+
             $folderName = 'new folder ' . $indiceFolder;
 
             try {

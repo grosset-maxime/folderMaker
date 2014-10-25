@@ -8,22 +8,26 @@ define(
 
     // PM
     'PM/Core',
+    'PM/Cmp/Notify',
 
     'App/Actions/FolderMakerAction',
 
     // Non AMD
     'js!jquery-ui'
 ],
-function ($, PM, FolderMakerAction) {
+function ($, PM, Notify, FolderMakerAction) {
     'use strict';
 
     var DEFAULT_NB_FOLDERS = 10,
         DEFAULT_NB_FILES_PER_FOLDER = 10,
+        NOTIFY_TYPE_ERROR = Notify.TYPE_ERROR,
+        NOTIFY_TYPE_INFO = Notify.TYPE_INFO,
         _defaultOptions = {
             root: null
         },
         _options = {},
         _els = {},
+        _notify,
         _hasFocus = false;
 
     /**
@@ -238,6 +242,22 @@ function ($, PM, FolderMakerAction) {
             folder: folder,
             nbFilesPerFolder: nbFilesPerFolder,
             nbFolders: nbFolders,
+            success: function (json) {
+                _dispNotify({
+                    message: 'Folders: ' + json.nbFolders + '<br/>' +
+                        'Files per folder: ' + json.nbFilesPerFolder,
+                    type: NOTIFY_TYPE_INFO,
+                    autoHide: true
+                });
+            },
+            failure: function (error) {
+                var unknownErrorMessage = 'Unknown error.';
+
+                _dispNotify(
+                    error.publicMessage || unknownErrorMessage,
+                    error.severity || Notify.TYPE_ERROR
+                );
+            },
             events: {
                 onEnd: function () {
                     _els.inputCustomFolder.val('');
@@ -245,6 +265,28 @@ function ($, PM, FolderMakerAction) {
             }
         });
     } // End function _start()
+
+    /**
+     *
+     */
+    function _dispNotify (options) {
+        options = options || {};
+
+        if (!_notify) {
+            _notify = new Notify({
+                className: 'optionsView_notify',
+                container: $(document.body),
+                autoHide: !!options.autoHide,
+                duration: options.duration || 3
+            });
+        }
+
+        _notify.setMessage(
+            options.message || '',
+            options.type || NOTIFY_TYPE_ERROR,
+            true
+        );
+    } // End function _dispNotify()
 
 
     var View = {

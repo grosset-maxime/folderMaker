@@ -7,47 +7,29 @@ define(
     'jquery',
 
     // PM
-    'PM/Core',
-    'PM/Cmp/Notify',
+    'PM/Core'
 ],
-function ($, PM, Notify) {
+function ($, PM) {
     'use strict';
 
-    var NOTIFY_TYPE_ERROR = Notify.TYPE_ERROR;
-
-    var _errorNotify,
-        _isDisabled = false;
+    var _isDisabled = false;
 
     /**
      *
      */
     function _createFolders (opts) {
-        var xhr, events, onStart, onEnd,
+        var xhr, events, onStart, onEnd, success, failure,
             defaultOptions = {
                 folder: '',
                 nbFolders: '',
                 nbFilesPerFolder: '',
+                success: null,
+                failure: null,
                 events: {
                     onStart: null,
                     onEnd: null
                 }
             };
-
-        /**
-         * @private
-         */
-        function displayErrorNotify (message, type) {
-            if (!_errorNotify) {
-                _errorNotify = new Notify({
-                    className: 'getRandomPicAction_notify',
-                    container: $(document.body),
-                    autoHide: true,
-                    duration: 3
-                });
-            }
-
-            _errorNotify.setMessage(message, type, true);
-        } // End function displayErrorNotify()
 
 
         // =================================
@@ -59,6 +41,8 @@ function ($, PM, Notify) {
         events = opts.events;
         onStart = events.onStart;
         onEnd = events.onEnd;
+        success = opts.success;
+        failure = opts.failure;
 
         if ($.isFunction(onStart)) {
             onStart();
@@ -80,34 +64,43 @@ function ($, PM, Notify) {
             var error,
                 unknownErrorMessage = 'Unknown error.';
 
+            if ($.isFunction(onEnd)) {
+                onEnd(json);
+            }
+
             if (json.error || !json.success) {
                 error = json.error || {};
-
-                displayErrorNotify(
-                    error.publicMessage || unknownErrorMessage,
-                    error.severity || Notify.TYPE_ERROR
-                );
 
                 PM.log('Error : ' + error.message || unknownErrorMessage);
                 PM.log(error);
 
+                if ($.isFunction(failure)) {
+                    failure(error);
+                }
+
                 return;
             }
 
-            PM.log('nb created folders = ' + json.nbFolders);
-            PM.log('nb files per folder = ' + json.nbFilesPerFolder);
-
-            if ($.isFunction(onEnd)) {
-                onEnd(json);
+            if ($.isFunction(success)) {
+                success(json);
             }
         });
 
         xhr.fail(function (jqXHR, textStatus, errorThrown) {
-            var message = 'FolderMakerAction.createFolders()';
-
-            displayErrorNotify('Server error.', NOTIFY_TYPE_ERROR);
+            var message = 'FolderMakerAction.createFolders()',
+                error = {
+                    publicMessage: 'Server error.'
+                };
 
             PM.logAjaxFail(jqXHR, textStatus, errorThrown, message);
+
+            if ($.isFunction(onEnd)) {
+                onEnd(error);
+            }
+
+            if ($.isFunction(failure)) {
+                failure(error);
+            }
         });
 
         xhr.always(function () {
