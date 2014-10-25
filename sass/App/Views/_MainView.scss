@@ -53,6 +53,10 @@ $FOOTER_HEIGHT: 44px;
     width: 38px;
     height: 20px;
 
+    .show_loading & {
+        display: block;
+    }
+
     .el_loading {
         width: 4px;
         height: 4px;
@@ -88,23 +92,3 @@ $FOOTER_HEIGHT: 44px;
         animation-delay: 0.78s;
     }
 } // End .ctn_loading
-
-.ctn_icon_pause {
-    display: none;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 550;
-    text-align: center;
-    width: 18px;
-    height: 16px;
-
-    .el_icon_pause {
-        width: 4px;
-        height: 14px;
-        margin: auto 1px;
-        background-color: rgba(240, 240, 240, 0.8);
-        border: 1px solid #555;
-        @include inline-block();
-    }
-} // End .ctn_icon_pause

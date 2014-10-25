@@ -259,7 +259,11 @@ function ($, PM, Notify, FolderMakerAction) {
                 );
             },
             events: {
+                onStart: function () {
+                    $(document.body).addClass('show_loading');
+                },
                 onEnd: function () {
+                    $(document.body).removeClass('show_loading');
                     _els.inputCustomFolder.val('');
                 }
             }
@@ -315,9 +319,7 @@ function ($, PM, Notify, FolderMakerAction) {
          */
         start: function () {
             _start();
-        }, // End function start()
-
-
+        } // End function start()
     };
 
     return View;

@@ -17,37 +17,37 @@ function ($, HeaderView, FooterView, OptionsView) {
     /**
      *
      */
-    var defaultOptions = {
+    var _defaultOptions = {
             root: null
         },
-        options = {},
-        els = {};
+        _options = {},
+        _els = {};
 
     /**
      *
      */
-    function buildSkeleton () {
+    function _buildSkeleton () {
         var mainCtn, loadingCtn;
 
-        mainCtn = els.mainCtn = $('<div>', {
+        mainCtn = _els.mainCtn = $('<div>', {
             'class': 'folder_maker flex'
         });
 
-        els.headerCtn = $('<div>', {
+        _els.headerCtn = $('<div>', {
             'class': 'fm_header_ctn flex'
         }).appendTo(mainCtn);
 
-        els.middleCtn = $('<div>', {
+        _els.middleCtn = $('<div>', {
             'class': 'fm_middle_ctn flex'
         }).appendTo(mainCtn);
 
-        els.footerCtn = $('<div>', {
+        _els.footerCtn = $('<div>', {
             'class': 'fm_footer_ctn flex'
         }).appendTo(mainCtn);
 
         // Loading
         // -------
-        loadingCtn = els.loadingCtn = $('<div>', {
+        loadingCtn = _els.loadingCtn = $('<div>', {
             'class': 'ctn_loading'
         }).append(
             $('<span>', {
@@ -65,13 +65,13 @@ function ($, HeaderView, FooterView, OptionsView) {
             loadingCtn
         );
 
-        options.root.append(mainCtn);
-    } // End function buildSkeleton()
+        _options.root.append(mainCtn);
+    } // End function _buildSkeleton()
 
     /**
      *
      */
-    function attachKeyboardShorcuts () {
+    function _attachKeyboardShorcuts () {
         $(document).on('keydown', function (e) {
             var keyPressed = e.which,
                 doPreventDefault = false;
@@ -80,7 +80,6 @@ function ($, HeaderView, FooterView, OptionsView) {
 
             switch (keyPressed) {
             case 13: // Enter
-            case 32: // SPACE
                 OptionsView.start();
                 doPreventDefault = true;
                 break;
@@ -90,21 +89,8 @@ function ($, HeaderView, FooterView, OptionsView) {
                 e.preventDefault();
             }
         });
-    } // End function attachKeyboardShorcuts()
+    } // End function _attachKeyboardShorcuts()
 
-    // /**
-    //  *
-    //  */
-    // function showLoading () {
-    //     els.loadingCtn.show();
-    // } // End function showLoading()
-
-    // /**
-    //  *
-    //  */
-    // function hideLoading () {
-    //     els.loadingCtn.hide();
-    // } // End function hideLoading()
 
     var View = {
         /**
@@ -113,28 +99,28 @@ function ($, HeaderView, FooterView, OptionsView) {
         init: function (opts) {
             var mainCtn;
 
-            $.extend(true, options, defaultOptions, opts || {});
+            $.extend(true, _options, _defaultOptions, opts || {});
 
-            if (!options.root) {
-                options.root = $(document.body);
+            if (!_options.root) {
+                _options.root = $(document.body);
             }
 
-            buildSkeleton();
-            mainCtn = els.mainCtn;
+            _buildSkeleton();
+            mainCtn = _els.mainCtn;
 
             HeaderView.init({
-                root: els.headerCtn
+                root: _els.headerCtn
             });
 
             FooterView.init({
-                root: els.footerCtn
+                root: _els.footerCtn
             });
 
             OptionsView.init({
-                root: els.middleCtn
+                root: _els.middleCtn
             });
 
-            attachKeyboardShorcuts();
+            _attachKeyboardShorcuts();
         }
     };
 
