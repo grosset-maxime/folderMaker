@@ -22,6 +22,7 @@ function ($, PM, Notify, FolderMakerAction) {
         DEFAULT_NB_FILES_PER_FOLDER = 10,
         NOTIFY_TYPE_ERROR = Notify.TYPE_ERROR,
         NOTIFY_TYPE_INFO = Notify.TYPE_INFO,
+        NOTIFY_TYPE_WARNING = Notify.TYPE_WARNING,
         _defaultOptions = {
             root: null
         },
@@ -225,10 +226,16 @@ function ($, PM, Notify, FolderMakerAction) {
     function _start () {
         var nbFilesPerFolder = 0,
             nbFolders = 0,
-            folder = _els.inputCustomFolder.val();
+            btnStart = _els.btnStart,
+            inputCustomFolder = _els.inputCustomFolder,
+            folder = inputCustomFolder.val();
 
         if (!$.trim(folder)) {
-            // Display notif.
+            _dispNotify({
+                message: 'Folder path is empty.',
+                type: NOTIFY_TYPE_WARNING,
+                autoHide: true
+            });
             return;
         }
 
@@ -237,6 +244,9 @@ function ($, PM, Notify, FolderMakerAction) {
         } else {
             nbFolders = _els.inputNbFolders.val();
         }
+
+        // Disable start btn.
+        btnStart.button('disable');
 
         FolderMakerAction.start({
             folder: folder,
@@ -264,7 +274,8 @@ function ($, PM, Notify, FolderMakerAction) {
                 },
                 onEnd: function () {
                     $(document.body).removeClass('show_loading');
-                    _els.inputCustomFolder.val('');
+                    inputCustomFolder.val('');
+                    btnStart.button('enable');
                 }
             }
         });

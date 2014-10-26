@@ -36,6 +36,8 @@ function ($, PM) {
         // Start of function createFolders()
         // =================================
 
+        _isDisabled = true;
+
         opts = $.extend(true, {}, defaultOptions, opts || {});
 
         events = opts.events;
@@ -116,7 +118,7 @@ function ($, PM) {
             if (_isDisabled) {
                 return;
             }
-            _isDisabled = true;
+
             _createFolders(opts);
         }, // End function start()
 
