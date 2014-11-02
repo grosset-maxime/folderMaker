@@ -46,6 +46,10 @@
         border: 1px solid #ddd;
         outline: none;
         padding-left: 8px;
+
+        &:focus {
+            border-color: #8bbdeb;
+        }
     }
 
     .input_spinner {

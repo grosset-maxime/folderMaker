@@ -46,7 +46,7 @@ function ($, PM, Notify, FolderMakerAction) {
         function keyUpInput (e) {
             var keyPressed = e.which,
                 doPreventDefault = false;
-            // console.log(keyPressed);
+            // PM.log(keyPressed);
             switch (keyPressed) {
             case 13: // Enter
                 doPreventDefault = true;
@@ -57,6 +57,23 @@ function ($, PM, Notify, FolderMakerAction) {
                 e.preventDefault();
             }
         } // End function keyUpInput()
+
+        /**
+         * @private
+         */
+        function checkInteger (e) {
+            var keyPressed = e.which;
+
+            // PM.log(keyPressed);
+
+            if (
+                keyPressed !== 8 && // Backspace
+                keyPressed !== 13 && // Enter
+                (keyPressed < 48 || keyPressed > 57 || e.shiftKey)
+            ) {
+                e.preventDefault();
+            }
+        } // End function checkInteger()
 
 
         // =================================
@@ -78,6 +95,7 @@ function ($, PM, Notify, FolderMakerAction) {
         });
 
         inputCustomFolder = _els.inputCustomFolder = $('<input>', {
+            id: 'pathFolderOpts',
             'class': 'input_folder',
             placeholder: 'Enter your path folder.',
             type: 'text',
@@ -87,8 +105,9 @@ function ($, PM, Notify, FolderMakerAction) {
             'class': 'el_ctn flex'
         }).append(
             $('<label>', {
-                'class': 'title title_custom_folder',
-                text: 'Folder :'
+                'class': 'title label',
+                text: 'Folder :',
+                for: 'pathFolderOpts'
             }),
             inputCustomFolder
         );
@@ -129,7 +148,8 @@ function ($, PM, Notify, FolderMakerAction) {
                 blur: function () {
                     _hasFocus = false;
                 },
-                keyup: keyUpInput
+                keyup: keyUpInput,
+                keydown: checkInteger
             }
         });
 
@@ -174,7 +194,8 @@ function ($, PM, Notify, FolderMakerAction) {
                 blur: function () {
                     _hasFocus = false;
                 },
-                keyup: keyUpInput
+                keyup: keyUpInput,
+                keydown: checkInteger
             }
         });
 
@@ -218,6 +239,8 @@ function ($, PM, Notify, FolderMakerAction) {
             min: 2,
             max: 99
         });
+
+        inputCustomFolder.focus();
     } // End function _buildSkeleton()
 
     /**
@@ -228,6 +251,8 @@ function ($, PM, Notify, FolderMakerAction) {
             nbFolders = 0,
             btnStart = _els.btnStart,
             inputCustomFolder = _els.inputCustomFolder,
+            inputNbFilesPerFolder = _els.inputNbFilesPerFolder,
+            inputNbFolders = _els.inputNbFolders,
             folder = inputCustomFolder.val();
 
         if (!$.trim(folder)) {
@@ -240,9 +265,11 @@ function ($, PM, Notify, FolderMakerAction) {
         }
 
         if (_els.radioNbFilesPerFolder.is(':checked')) {
-            nbFilesPerFolder = _els.inputNbFilesPerFolder.val();
+            nbFilesPerFolder = Math.max(2, inputNbFilesPerFolder.val());
+            inputNbFilesPerFolder.val(nbFilesPerFolder);
         } else {
-            nbFolders = _els.inputNbFolders.val();
+            nbFolders = Math.max(2, inputNbFolders.val());
+            inputNbFolders.val(nbFolders);
         }
 
         // Disable start btn.
@@ -274,7 +301,7 @@ function ($, PM, Notify, FolderMakerAction) {
                 },
                 onEnd: function () {
                     $(document.body).removeClass('show_loading');
-                    inputCustomFolder.val('');
+                    inputCustomFolder.val('').focus();
                     btnStart.button('enable');
                 }
             }

@@ -406,16 +406,20 @@ body {
   outline: none;
   padding-left: 8px;
 }
-/* line 51, ../../sass/App/Views/_OptionsView.scss */
+/* line 50, ../../sass/App/Views/_OptionsView.scss */
+.folder_maker .fm_options_view .input_folder:focus {
+  border-color: #8bbdeb;
+}
+/* line 55, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .input_spinner {
   outline: none;
   width: 20px;
 }
-/* line 56, ../../sass/App/Views/_OptionsView.scss */
+/* line 60, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .input_radio {
   margin-right: 12px;
 }
-/* line 60, ../../sass/App/Views/_OptionsView.scss */
+/* line 64, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .title {
   margin-right: 4px;
   display: -moz-inline-stack;
@@ -425,11 +429,11 @@ body {
   zoom: 1;
   *display: inline;
 }
-/* line 64, ../../sass/App/Views/_OptionsView.scss */
+/* line 68, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .title.label {
   cursor: pointer;
 }
-/* line 69, ../../sass/App/Views/_OptionsView.scss */
+/* line 73, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .start_btn {
   width: 80%;
   font-size: 1.5em;
