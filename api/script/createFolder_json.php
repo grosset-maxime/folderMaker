@@ -17,10 +17,10 @@
 */
 
 require_once ROOT_DIR . '/api/class/FolderMaker/CreateFolder.class.php';
-require_once ROOT_DIR . '/api/class/ExceptionExtended.class.php';
+require_once ROOT_DIR . '/api/vendors/PM/class/ExceptionExtended.class.php';
 
-// DS
-use DS\ExceptionExtended;
+// PM
+use PM\ExceptionExtended;
 
 // FolderMaker
 use FolderMaker\CreateFolder;

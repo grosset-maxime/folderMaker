@@ -2,6 +2,7 @@
 *.sublime-project
 *.sublime-workspace
 
+api/js/vendors/PM
 public/js/vendors/PM
 public/css/vendors/PM
 

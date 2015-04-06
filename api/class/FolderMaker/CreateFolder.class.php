@@ -18,8 +18,8 @@ namespace FolderMaker;
 
 require_once dirname(__FILE__) . '/../../globals.php';
 
-require_once dirname(__FILE__) . '/../Root.class.php';
-require_once dirname(__FILE__) . '/../ExceptionExtended.class.php';
+require_once dirname(__FILE__) . '/../../vendors/PM/class/Root.class.php';
+require_once dirname(__FILE__) . '/../../vendors/PM/class/ExceptionExtended.class.php';
 
 
 // PHP
@@ -27,8 +27,8 @@ use \DirectoryIterator;
 use \Exception;
 
 // DS
-use DS\Root;
-use DS\ExceptionExtended;
+use PM\Root;
+use PM\ExceptionExtended;
 
 
 /**
