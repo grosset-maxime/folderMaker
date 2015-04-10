@@ -29,7 +29,8 @@ function ($, PM, Notify, FolderMakerAction) {
         _options = {},
         _els = {},
         _notify,
-        _hasFocus = false;
+        _hasFocus = false,
+        _isBuilt = false;
 
     /**
      *
@@ -85,7 +86,12 @@ function ($, PM, Notify, FolderMakerAction) {
             html: $('<div>', {
                 'class': 'title_view',
                 'text': 'Options'
-            })
+            }),
+            on: {
+                click: function (e) {
+                    e.stopPropagation();
+                }
+            }
         });
 
         mainCtn.css('max-height', _options.root.height() - 160);
@@ -318,7 +324,7 @@ function ($, PM, Notify, FolderMakerAction) {
             _notify = new Notify({
                 className: 'optionsView_notify',
                 container: $(document.body),
-                autoHide: !!options.autoHide,
+                autoHide: options.autoHide === false ? false : true,
                 duration: options.duration || 3
             });
         }
@@ -343,6 +349,8 @@ function ($, PM, Notify, FolderMakerAction) {
             }
 
             _buildSkeleton();
+
+            _isBuilt = true;
         }, // End function init()
 
         /**
@@ -351,6 +359,15 @@ function ($, PM, Notify, FolderMakerAction) {
         hasFocus: function () {
             return _hasFocus;
         }, // End function hasFocus()
+
+        /**
+         *
+         */
+        setFocusCustomFolder: function () {
+            if (_isBuilt) {
+                _els.inputCustomFolder.focus();
+            }
+        },
 
         /**
          *

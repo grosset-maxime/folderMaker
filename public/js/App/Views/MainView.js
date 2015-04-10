@@ -34,15 +34,24 @@ function ($, HeaderView, FooterView, OptionsView) {
         });
 
         _els.headerCtn = $('<div>', {
-            'class': 'fm_header_ctn flex'
+            'class': 'fm_header_ctn flex',
+            on: {
+                click: OptionsView.setFocusCustomFolder
+            }
         }).appendTo(mainCtn);
 
         _els.middleCtn = $('<div>', {
-            'class': 'fm_middle_ctn flex'
+            'class': 'fm_middle_ctn flex',
+            on: {
+                click: OptionsView.setFocusCustomFolder
+            }
         }).appendTo(mainCtn);
 
         _els.footerCtn = $('<div>', {
-            'class': 'fm_footer_ctn flex'
+            'class': 'fm_footer_ctn flex',
+            on: {
+                click: OptionsView.setFocusCustomFolder
+            }
         }).appendTo(mainCtn);
 
         // Loading
