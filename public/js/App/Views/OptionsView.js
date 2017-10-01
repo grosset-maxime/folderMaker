@@ -89,6 +89,7 @@ function ($, PM, Notify, FolderMakerAction) {
             }),
             on: {
                 click: function (e) {
+                    _els.inputCustomFolder.focus();
                     e.stopPropagation();
                 }
             }
@@ -155,7 +156,10 @@ function ($, PM, Notify, FolderMakerAction) {
                     _hasFocus = false;
                 },
                 keyup: keyUpInput,
-                keydown: checkInteger
+                keydown: checkInteger,
+                click: function (e) {
+                    e.stopPropagation();
+                }
             }
         });
 
@@ -201,7 +205,10 @@ function ($, PM, Notify, FolderMakerAction) {
                     _hasFocus = false;
                 },
                 keyup: keyUpInput,
-                keydown: checkInteger
+                keydown: checkInteger,
+                click: function (e) {
+                    e.stopPropagation();
+                }
             }
         });
 
