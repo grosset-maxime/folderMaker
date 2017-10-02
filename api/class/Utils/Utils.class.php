@@ -71,7 +71,7 @@ class Utils extends root
         // Manage '/' for start and end of the path.
         if ($p) {
             // Begin of path
-            if ($p[0] !== '/') {
+            if (!$this->isWindows() && $p[0] !== '/') {
                 $p = '/' . $p;
             }
 
@@ -82,6 +82,10 @@ class Utils extends root
         }
 
         return $p;
+    }
+
+    public function isWindows () {
+        return strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
     }
 
 }
