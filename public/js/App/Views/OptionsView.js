@@ -368,10 +368,11 @@ function ($, PM, Notify, FolderMakerAction) {
     function _onFailure (error) {
         var unknownErrorMessage = 'Unknown error.';
 
-        _dispNotify(
-            error.publicMessage || unknownErrorMessage,
-            error.severity || Notify.TYPE_ERROR
-        );
+        _dispNotify({
+            message: error.publicMessage || unknownErrorMessage,
+            type: error.severity || Notify.TYPE_ERROR,
+            autoHide: false
+        });
     }
 
     function _onSuccess (message) {
