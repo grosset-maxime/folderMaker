@@ -32,14 +32,52 @@ function ($, PM, Notify, FolderMakerAction) {
         _hasFocus = false,
         _isBuilt = false;
 
-    /**
-     *
-     */
+
+    function _dispNotify (options) {
+        options = options || {};
+
+        if (!_notify) {
+            _notify = new Notify({
+                className: 'optionsView_notify',
+                container: $(document.body),
+                autoHide: options.autoHide === false ? false : true,
+                duration: options.duration || 3
+            });
+        }
+
+        _notify.setMessage(
+            options.message || '',
+            options.type || NOTIFY_TYPE_ERROR,
+            true
+        );
+    }
+
+
+    function _start () {
+
+        var folder = _els.inputCustomFolder.val();
+
+        if (!$.trim(folder)) {
+            _dispNotify({
+                message: 'Folder path is empty.',
+                type: NOTIFY_TYPE_WARNING,
+                autoHide: true
+            });
+            return;
+        }
+
+        if (_isChecked(_els.radioExtractFiles)) {
+            _extractFiles({ folder: folder });
+        } else {
+            _createFolders({ folder: folder });
+        }
+    }
+
     function _buildSkeleton () {
         var mainCtn, customFolderCtn, radioNbFilesPerFolder, radioNbFolders,
             footerCtn, btnStart, inputNbFilesPerFolder, inputCustomFolder,
-            nbFilesPerFolderCtn, nbFoldersCtn,
-            inputNbFolders;
+            nbFilesPerFolderCtn, nbFoldersCtn, extractFilesCtn, radioExtractFiles,
+            inputNbFolders, removeEmptyFoldersCheckbox;
 
         /**
          * @private
@@ -76,6 +114,14 @@ function ($, PM, Notify, FolderMakerAction) {
             }
         } // End function checkInteger()
 
+        function checkInput (input, check) {
+            check = check === false ? false : true;
+            input.prop('checked', check);
+        }
+
+        function separator () {
+            return $('<div>', { 'class': 'separator' });
+        }
 
         // =================================
         // Start of function buildSkeleton()
@@ -89,7 +135,7 @@ function ($, PM, Notify, FolderMakerAction) {
             }),
             on: {
                 click: function (e) {
-                    _els.inputCustomFolder.focus();
+                    inputCustomFolder.focus();
                     e.stopPropagation();
                 }
             }
@@ -150,7 +196,7 @@ function ($, PM, Notify, FolderMakerAction) {
             on: {
                 focus: function () {
                     _hasFocus = true;
-                    radioNbFilesPerFolder.prop('checked', true);
+                    checkInput(radioNbFilesPerFolder);
                 },
                 blur: function () {
                     _hasFocus = false;
@@ -174,7 +220,7 @@ function ($, PM, Notify, FolderMakerAction) {
                 for: 'nbFilesPerFolderOpts',
                 on: {
                     click: function () {
-                        radioNbFilesPerFolder.prop('checked', true);
+                        checkInput(radioNbFilesPerFolder);
                     }
                 }
             }),
@@ -199,7 +245,7 @@ function ($, PM, Notify, FolderMakerAction) {
             on: {
                 focus: function () {
                     _hasFocus = true;
-                    radioNbFolders.prop('checked', true);
+                    checkInput(radioNbFolders);
                 },
                 blur: function () {
                     _hasFocus = false;
@@ -223,11 +269,55 @@ function ($, PM, Notify, FolderMakerAction) {
                 for: 'nbFoldersOpts',
                 on: {
                     click: function () {
-                        radioNbFolders.prop('checked', true);
+                        checkInput(radioNbFolders);
                     }
                 }
             }),
             inputNbFolders
+        );
+
+        // Radio extract files.
+        radioExtractFiles = _els.radioExtractFiles = $('<input>', {
+            id: 'extractFilesRadio',
+            name: 'makerOpts',
+            'class': 'input_radio input_radio_extractFiles',
+            type: 'radio'
+        });
+
+        removeEmptyFoldersCheckbox = _els.removeEmptyFoldersCheckbox = $('<input>', {
+            'class': 'input_check_removeEmptyFloder',
+            type: 'checkbox',
+            checked: true
+        });
+
+        extractFilesCtn = $('<div>', {
+            'class': 'el_ctn'
+        }).append(
+            radioExtractFiles,
+            $('<label>', {
+                'class': 'title label',
+                text: 'Extract files to folder',
+                for: 'extractFilesRadio',
+                on: {
+                    click: function () {
+                        checkInput(radioExtractFiles);
+                    }
+                }
+            }),
+            removeEmptyFoldersCheckbox,
+            $('<label>', {
+                'class': 'title label',
+                text: 'Remove empty sub folders',
+                on: {
+                    click: function () {
+                        checkInput(
+                            removeEmptyFoldersCheckbox,
+                            !removeEmptyFoldersCheckbox.prop('checked')
+                        );
+                        checkInput(radioExtractFiles);
+                    }
+                }
+            })
         );
 
         footerCtn.append(
@@ -236,8 +326,12 @@ function ($, PM, Notify, FolderMakerAction) {
 
         mainCtn.append(
             customFolderCtn,
+            separator(),
             nbFilesPerFolderCtn,
             nbFoldersCtn,
+            separator(),
+            extractFilesCtn,
+            separator(),
             footerCtn
         );
 
@@ -256,98 +350,96 @@ function ($, PM, Notify, FolderMakerAction) {
         inputCustomFolder.focus();
     } // End function _buildSkeleton()
 
-    /**
-     *
-     */
-    function _start () {
+    function _isChecked (input) {
+        return input.is(':checked');
+    }
+
+    function _onStart () {
+        _els.btnStart.button('disable');
+        $(document.body).addClass('show_loading');
+    }
+
+    function _onEnd () {
+        _els.inputCustomFolder.focus();
+        _els.btnStart.button('enable');
+        $(document.body).removeClass('show_loading');
+    }
+
+    function _onFailure (error) {
+        var unknownErrorMessage = 'Unknown error.';
+
+        _dispNotify(
+            error.publicMessage || unknownErrorMessage,
+            error.severity || Notify.TYPE_ERROR
+        );
+    }
+
+    function _onSuccess (message) {
+        _dispNotify({
+            message: message,
+            type: NOTIFY_TYPE_INFO,
+            autoHide: true
+        });
+    }
+
+    function _extractFiles (options) {
+        options = options || {};
+
+        FolderMakerAction.extractFiles({
+            folder: options.folder,
+            removeEmptyFolders: _isChecked(_els.removeEmptyFoldersCheckbox),
+            success: function () {
+                _onSuccess('File extraction success.');
+            },
+            failure: _onFailure,
+            events: {
+                onStart: _onStart,
+                onEnd: _onEnd
+            }
+        });
+    }
+
+    function _createFolders (options) {
+        options = options || {};
+
         var nbFilesPerFolder = 0,
             nbFolders = 0,
-            btnStart = _els.btnStart,
-            inputCustomFolder = _els.inputCustomFolder,
             inputNbFilesPerFolder = _els.inputNbFilesPerFolder,
-            inputNbFolders = _els.inputNbFolders,
-            folder = inputCustomFolder.val();
+            inputNbFolders = _els.inputNbFolders;
 
-        if (!$.trim(folder)) {
-            _dispNotify({
-                message: 'Folder path is empty.',
-                type: NOTIFY_TYPE_WARNING,
-                autoHide: true
-            });
-            return;
-        }
+        if (_isChecked(_els.radioNbFilesPerFolder)) {
 
-        if (_els.radioNbFilesPerFolder.is(':checked')) {
             nbFilesPerFolder = Math.max(2, inputNbFilesPerFolder.val());
             inputNbFilesPerFolder.val(nbFilesPerFolder);
-        } else {
+
+        } else if (_isChecked(_els.radioNbFolders)) {
+
             nbFolders = Math.max(2, inputNbFolders.val());
             inputNbFolders.val(nbFolders);
+
         }
 
-        // Disable start btn.
-        btnStart.button('disable');
-
-        FolderMakerAction.start({
-            folder: folder,
+        FolderMakerAction.createFolders({
+            folder: options.folder,
             nbFilesPerFolder: nbFilesPerFolder,
             nbFolders: nbFolders,
             success: function (json) {
-                _dispNotify({
-                    message: 'Folders: ' + json.nbFolders + '<br/>' +
-                        'Files per folder: ' + json.nbFilesPerFolder,
-                    type: NOTIFY_TYPE_INFO,
-                    autoHide: true
-                });
-            },
-            failure: function (error) {
-                var unknownErrorMessage = 'Unknown error.';
-
-                _dispNotify(
-                    error.publicMessage || unknownErrorMessage,
-                    error.severity || Notify.TYPE_ERROR
+                _onSuccess(
+                    'Folders: ' + json.nbFolders + '<br/>'
+                        + 'Files per folder: ' + json.nbFilesPerFolder
                 );
+
             },
+            failure: _onFailure,
             events: {
-                onStart: function () {
-                    $(document.body).addClass('show_loading');
-                },
-                onEnd: function () {
-                    $(document.body).removeClass('show_loading');
-                    inputCustomFolder.val('').focus();
-                    btnStart.button('enable');
-                }
+                onStart: _onStart,
+                onEnd: _onEnd
             }
         });
-    } // End function _start()
-
-    /**
-     *
-     */
-    function _dispNotify (options) {
-        options = options || {};
-
-        if (!_notify) {
-            _notify = new Notify({
-                className: 'optionsView_notify',
-                container: $(document.body),
-                autoHide: options.autoHide === false ? false : true,
-                duration: options.duration || 3
-            });
-        }
-
-        _notify.setMessage(
-            options.message || '',
-            options.type || NOTIFY_TYPE_ERROR,
-            true
-        );
-    } // End function _dispNotify()
-
+    }
 
     var View = {
-        /**
-         *
-         */
+
         init: function (opts) {
             $.extend(true, _options, _defaultOptions, opts || {});
 
@@ -358,30 +450,21 @@ function ($, PM, Notify, FolderMakerAction) {
             _buildSkeleton();
 
             _isBuilt = true;
-        }, // End function init()
+        },
 
-        /**
-         *
-         */
         hasFocus: function () {
             return _hasFocus;
-        }, // End function hasFocus()
+        },
 
-        /**
-         *
-         */
         setFocusCustomFolder: function () {
             if (_isBuilt) {
                 _els.inputCustomFolder.focus();
             }
         },
 
-        /**
-         *
-         */
         start: function () {
             _start();
-        } // End function start()
+        }
     };
 
     return View;

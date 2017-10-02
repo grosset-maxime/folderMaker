@@ -36,6 +36,10 @@ $_routes += array(
         'isScript' => true,
         'path' => '/api/script/createFolder_json.php',
     ),
+    'extractFiles_s' => array(
+        'isScript' => true,
+        'path' => '/api/script/extractFiles_json.php',
+    ),
 );
 
 // Static - Views - Errors

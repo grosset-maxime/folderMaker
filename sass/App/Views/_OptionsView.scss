@@ -39,6 +39,12 @@
         width: 100%;
     }
 
+    .separator {
+        border: 1px solid #eee;
+        width: 100%;
+        margin: 10px 0;
+    }
+
     .input_folder {
         width: 80%;
         border-radius: 4px;
@@ -75,5 +81,9 @@
         font-size: 1.5em;
         text-align: center;
         margin: auto;
+    }
+
+    .input_check_removeEmptyFloder {
+        margin-left: 20px;
     }
 } // End .ds_options_view
