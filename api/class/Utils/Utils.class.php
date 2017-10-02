@@ -85,7 +85,7 @@ class Utils extends root
     }
 
     public function isWindows () {
-        return strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
+        return (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
     }
 
 }
