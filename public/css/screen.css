@@ -404,7 +404,7 @@ body {
 /* line 61, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .input_spinner {
   outline: none;
-  width: 20px;
+  width: 30px;
 }
 /* line 66, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .input_radio {

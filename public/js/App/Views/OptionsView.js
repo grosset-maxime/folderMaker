@@ -18,8 +18,10 @@ define(
 function ($, PM, Notify, FolderMakerAction) {
     'use strict';
 
-    var DEFAULT_NB_FOLDERS = 10,
-        DEFAULT_NB_FILES_PER_FOLDER = 10,
+    var DEFAULT_NB_FOLDERS = 6,
+        DEFAULT_NB_FILES_PER_FOLDER = 50,
+        MIN_NB_FILES_PER_FOLDER = 1,
+        MIN_NB_FOLDERS = 1,
         NOTIFY_TYPE_ERROR = Notify.TYPE_ERROR,
         NOTIFY_TYPE_INFO = Notify.TYPE_INFO,
         NOTIFY_TYPE_WARNING = Notify.TYPE_WARNING,
@@ -95,7 +97,7 @@ function ($, PM, Notify, FolderMakerAction) {
             if (doPreventDefault) {
                 e.preventDefault();
             }
-        } // End function keyUpInput()
+        }
 
         /**
          * @private
@@ -152,6 +154,25 @@ function ($, PM, Notify, FolderMakerAction) {
             'class': 'input_folder',
             placeholder: 'Enter your path folder.',
             type: 'text',
+            on: {
+                keyup: function (e) {
+                    var keyPressed = e.which,
+                        doPreventDefault = false;
+
+                    // PM.log(keyPressed);
+
+                    switch (keyPressed) {
+                    case 27: // ESC
+                        doPreventDefault = true;
+                        _els.inputCustomFolder.val('');
+                        break;
+                    }
+
+                    if (doPreventDefault) {
+                        e.preventDefault();
+                    }
+                }
+            }
         });
 
         customFolderCtn = $('<div>', {
@@ -338,17 +359,17 @@ function ($, PM, Notify, FolderMakerAction) {
         _options.root.append(mainCtn);
 
         inputNbFilesPerFolder.spinner({
-            min: 2,
-            max: 99
+            min: MIN_NB_FILES_PER_FOLDER,
+            max: 9999
         });
 
         inputNbFolders.spinner({
-            min: 2,
-            max: 99
+            min: MIN_NB_FOLDERS,
+            max: 999
         });
 
         inputCustomFolder.focus();
-    } // End function _buildSkeleton()
+    }
 
     function _isChecked (input) {
         return input.is(':checked');
@@ -410,12 +431,12 @@ function ($, PM, Notify, FolderMakerAction) {
 
         if (_isChecked(_els.radioNbFilesPerFolder)) {
 
-            nbFilesPerFolder = Math.max(2, inputNbFilesPerFolder.val());
+            nbFilesPerFolder = Math.max(MIN_NB_FILES_PER_FOLDER, inputNbFilesPerFolder.val());
             inputNbFilesPerFolder.val(nbFilesPerFolder);
 
         } else if (_isChecked(_els.radioNbFolders)) {
 
-            nbFolders = Math.max(2, inputNbFolders.val());
+            nbFolders = Math.max(MIN_NB_FOLDERS, inputNbFolders.val());
             inputNbFolders.val(nbFolders);
 
         }
