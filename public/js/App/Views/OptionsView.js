@@ -119,7 +119,7 @@ function ($, PM, Notify, FolderMakerAction) {
         }
 
         function checkInput (input, check) {
-            check = check === false ? false : true;
+            check = check !== false;
             input.prop('checked', check);
         }
 
@@ -178,7 +178,12 @@ function ($, PM, Notify, FolderMakerAction) {
         });
 
         customFolderCtn = $('<div>', {
-            'class': 'el_ctn flex'
+            'class': 'el_ctn flex first last',
+            on: {
+                click: function () {
+                    checkInput(_els.inputCustomFolder);
+                }
+            }
         }).append(
             $('<label>', {
                 'class': 'title label',
@@ -234,7 +239,12 @@ function ($, PM, Notify, FolderMakerAction) {
 
         // Ctn nb files per folder.
         nbFilesPerFolderCtn = $('<div>', {
-            'class': 'el_ctn'
+            'class': 'el_ctn first',
+            on: {
+                click: function () {
+                    checkInput(radioNbFilesPerFolder);
+                }
+            }
         }).append(
             radioNbFilesPerFolder,
             $('<label>', {
@@ -283,7 +293,12 @@ function ($, PM, Notify, FolderMakerAction) {
 
         // Ctn nb folders.
         nbFoldersCtn = $('<div>', {
-            'class': 'el_ctn'
+            'class': 'el_ctn last',
+            on: {
+                click: function () {
+                    checkInput(radioNbFolders);
+                }
+            }
         }).append(
             radioNbFolders,
             $('<label>', {
@@ -314,7 +329,12 @@ function ($, PM, Notify, FolderMakerAction) {
         });
 
         extractFilesCtn = $('<div>', {
-            'class': 'el_ctn'
+            'class': 'el_ctn first last',
+            on: {
+                click: function () {
+                    checkInput(_els.radioExtractFiles);
+                }
+            }
         }).append(
             radioExtractFiles,
             $('<label>', {

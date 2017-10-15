@@ -75,7 +75,7 @@ function ($, HeaderView, FooterView, OptionsView) {
         );
 
         _options.root.append(mainCtn);
-    } // End function _buildSkeleton()
+    }
 
     /**
      *
@@ -98,7 +98,7 @@ function ($, HeaderView, FooterView, OptionsView) {
                 e.preventDefault();
             }
         });
-    } // End function _attachKeyboardShorcuts()
+    }
 
 
     var View = {
