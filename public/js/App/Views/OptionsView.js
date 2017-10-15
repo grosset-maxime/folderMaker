@@ -42,7 +42,7 @@ function ($, PM, Notify, FolderMakerAction) {
             _notify = new Notify({
                 className: 'optionsView_notify',
                 container: $(document.body),
-                autoHide: options.autoHide === false ? false : true,
+                autoHide: options.autoHide !== false,
                 duration: options.duration || 3
             });
         }
@@ -107,14 +107,16 @@ function ($, PM, Notify, FolderMakerAction) {
 
             // PM.log(keyPressed);
 
+            // Prevent if key is not
             if (
-                keyPressed !== 8 && // Backspace
-                keyPressed !== 13 && // Enter
-                (keyPressed < 48 || keyPressed > 57 || e.shiftKey)
+                keyPressed !== 8     // backspace.
+                && keyPressed !== 9  // tab.
+                && keyPressed !== 13 // enter.
+                && (keyPressed < 48 || keyPressed > 57) // a number.
             ) {
                 e.preventDefault();
             }
-        } // End function checkInteger()
+        }
 
         function checkInput (input, check) {
             check = check === false ? false : true;
@@ -212,7 +214,7 @@ function ($, PM, Notify, FolderMakerAction) {
             id: 'nbFilesPerFolderOpts',
             'class': 'input_nbFilesPerFolder input_spinner',
             value: DEFAULT_NB_FILES_PER_FOLDER,
-            maxlength: 2,
+            maxlength: 4,
             numberFormat: 'n',
             on: {
                 focus: function () {
@@ -261,7 +263,7 @@ function ($, PM, Notify, FolderMakerAction) {
             id: 'nbFoldersOpts',
             'class': 'input_nbFolders input_spinner',
             value: DEFAULT_NB_FOLDERS,
-            maxlength: 2,
+            maxlength: 3,
             numberFormat: 'n',
             on: {
                 focus: function () {
