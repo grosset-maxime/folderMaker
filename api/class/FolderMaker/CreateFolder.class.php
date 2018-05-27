@@ -21,6 +21,8 @@ require_once dirname(__FILE__) . '/../../globals.php';
 require_once dirname(__FILE__) . '/../../vendors/PM/class/Root.class.php';
 require_once dirname(__FILE__) . '/../../vendors/PM/class/ExceptionExtended.class.php';
 
+require_once dirname(__FILE__) . '/../Utils/Utils.class.php';
+
 
 // PHP
 use \DirectoryIterator;
@@ -30,6 +32,8 @@ use \Exception;
 use PM\Root;
 use PM\ExceptionExtended;
 
+// Utils
+use Utils\Utils;
 
 /**
  * Class CreateFolder.
@@ -42,8 +46,7 @@ use PM\ExceptionExtended;
  */
 class CreateFolder extends Root
 {
-    protected $WIN_SEP = '\\';
-    protected $UNIX_SEP = '/';
+    protected $Utils = null;
 
     protected $folder = '';          // (Mandatory) Folder path.
     protected $nbFilesPerFolder = 0; // (optional) Nb files per folder.
@@ -60,19 +63,9 @@ class CreateFolder extends Root
      */
     public function __construct(array $data = array())
     {
-        parent::__construct($data);
-    }
+        $this->Utils = new Utils();
 
-    /**
-     * replaceWinSlaches
-     *
-     * @param {String} $s : String to replace antislashes by slashes.
-     *
-     * @return {String} String with win antislashes replaced by slashes.
-     */
-    protected function replaceWinSlaches($s)
-    {
-        return str_replace($this->WIN_SEP, $this->UNIX_SEP, $s);
+        parent::__construct($data);
     }
 
     /**
@@ -85,13 +78,13 @@ class CreateFolder extends Root
     protected function normalizeFolder($folder = '')
     {
         // Init vars.
-        $UNIX_SEP = $this->UNIX_SEP;
+        $UNIX_SEP = Utils::UNIX_SEP;
         $errorMessage = '';
         $lenghtFolder = 0;
         $firstCharCustomFolder = '';
 
         $folder = trim($folder);
-        $folder = $this->replaceWinSlaches($folder);
+        $folder = $this->Utils->replaceWinSlaches($folder);
         $lenghtFolder = strlen($folder);
 
         if ($folder === $UNIX_SEP) {
@@ -285,17 +278,14 @@ class CreateFolder extends Root
             set_time_limit(30);
 
             $fileName = $file->getFilename();
-
-            if ($file->isDot()
-                || preg_match('/^[\.].*/i', $fileName)
-                || preg_match('/^(thumb)(s)?[\.](db)$/i', $fileName)
-            ) {
-                continue;
-            }
-
             $isDir = $file->isDir();
 
-            if ($isDir || !preg_match('/(.jpeg|.jpg|.gif|.png|.bmp)$/i', $fileName)) {
+            if ($file->isDot()
+                || $isDir
+                || preg_match('/^[\.].*/i', $fileName)
+                || preg_match('/^(thumb)(s)?[\.](db)$/i', $fileName)
+                || !$this->Utils->isSupportedFileType($fileName)
+            ) {
                 continue;
             }
 
