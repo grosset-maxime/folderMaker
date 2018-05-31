@@ -33,12 +33,14 @@ $nbFolders;
 $logError;
 $jsonResult;
 $result;
-$CreateFolder; // Instance of CreateFolder class.
+$CreateFolder;  // Instance of CreateFolder class.
+$typesToKeep;   // Types file filter. ('.jpg', '.png', '.mp4', ...)
 
 
 $folder = !empty($_POST['folder']) ? $_POST['folder'] : '';
 $nbFilesPerFolder = !empty($_POST['nbFilesPerFolder']) ? $_POST['nbFilesPerFolder'] : 0;
 $nbFolders = !empty($_POST['nbFolders']) ? $_POST['nbFolders'] : 0;
+$typesToKeep = !empty($_POST['types']) ? $_POST['types'] : array();
 
 $logError = array(
     'mandatory_fields' => array(
@@ -46,7 +48,8 @@ $logError = array(
     ),
     'optional_fields' => array(
         'nbFilesPerFolder' => '= ' . $nbFilesPerFolder,
-        'nbFolders' => '= ' . $nbFolders
+        'nbFolders' => '= ' . $nbFolders,
+        'typesToKeep' => '= ' . print_r($typesToKeep, true)
     ),
 );
 
@@ -62,7 +65,8 @@ try {
         array(
             'folder' => $folder,
             'nbFilesPerFolder' => $nbFilesPerFolder,
-            'nbFolders' => $nbFolders
+            'nbFolders' => $nbFolders,
+            'typesToKeep' => $typesToKeep
         )
     );
 

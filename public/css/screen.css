@@ -358,6 +358,10 @@ body {
   justify-content: flex-start;
 }
 /* line 17, ../../sass/App/Views/_OptionsView.scss */
+.folder_maker .fm_options_view .label {
+  user-select: none;
+}
+/* line 21, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .title_view {
   font-weight: bold;
   font-size: 1.3em;
@@ -366,7 +370,7 @@ body {
   width: 100%;
   border-bottom: 1px solid #e6e6e6;
 }
-/* line 26, ../../sass/App/Views/_OptionsView.scss */
+/* line 30, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .footer_ctn {
   text-align: center;
   width: 100%;
@@ -375,32 +379,32 @@ body {
   left: 0;
   height: 100px;
 }
-/* line 35, ../../sass/App/Views/_OptionsView.scss */
+/* line 39, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .el_ctn {
   padding: 8px;
   line-height: 1em;
   width: 100%;
-  cursor: pointer;
 }
-/* line 41, ../../sass/App/Views/_OptionsView.scss */
+/* line 44, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .el_ctn.first {
   padding-top: 18px;
 }
-/* line 45, ../../sass/App/Views/_OptionsView.scss */
+/* line 48, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .el_ctn.last {
   padding-bottom: 18px;
 }
-/* line 49, ../../sass/App/Views/_OptionsView.scss */
-.folder_maker .fm_options_view .el_ctn:hover {
+/* line 52, ../../sass/App/Views/_OptionsView.scss */
+.folder_maker .fm_options_view .el_ctn.selectable:hover {
+  cursor: pointer;
   background: #f9f9f9;
   border-radius: 5px;
 }
-/* line 55, ../../sass/App/Views/_OptionsView.scss */
+/* line 59, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .separator {
   border: 1px solid #eee;
   width: 100%;
 }
-/* line 60, ../../sass/App/Views/_OptionsView.scss */
+/* line 64, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .input_folder {
   width: 80%;
   border-radius: 4px;
@@ -409,20 +413,20 @@ body {
   outline: none;
   padding-left: 8px;
 }
-/* line 68, ../../sass/App/Views/_OptionsView.scss */
+/* line 72, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .input_folder:focus {
   border-color: #8bbdeb;
 }
-/* line 73, ../../sass/App/Views/_OptionsView.scss */
+/* line 77, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .input_spinner {
   outline: none;
   width: 30px;
 }
-/* line 78, ../../sass/App/Views/_OptionsView.scss */
+/* line 82, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .input_radio {
   margin-right: 12px;
 }
-/* line 82, ../../sass/App/Views/_OptionsView.scss */
+/* line 86, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .title {
   margin-right: 4px;
   display: inline-block;
@@ -431,18 +435,41 @@ body {
   *zoom: 1;
   *display: inline;
 }
-/* line 86, ../../sass/App/Views/_OptionsView.scss */
+/* line 90, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .title.label {
   cursor: pointer;
 }
-/* line 91, ../../sass/App/Views/_OptionsView.scss */
+/* line 95, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .start_btn {
   width: 80%;
   font-size: 1.5em;
   text-align: center;
   margin: auto;
 }
-/* line 98, ../../sass/App/Views/_OptionsView.scss */
+/* line 102, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .input_check_removeEmptyFloder {
   margin-left: 20px;
+}
+/* line 107, ../../sass/App/Views/_OptionsView.scss */
+.folder_maker .fm_options_view .filter_by_categories .input_check {
+  cursor: pointer;
+}
+/* line 111, ../../sass/App/Views/_OptionsView.scss */
+.folder_maker .fm_options_view .filter_by_categories .label {
+  margin-right: 30px;
+  margin-left: 3px;
+}
+/* line 116, ../../sass/App/Views/_OptionsView.scss */
+.folder_maker .fm_options_view .filter_by_categories .types_list {
+  display: none;
+  overflow: hidden;
+  padding: 8px 10px;
+  margin: 8px 20px;
+  margin-bottom: 0;
+  border-radius: 5px;
+  background: #FCF3E5;
+}
+/* line 125, ../../sass/App/Views/_OptionsView.scss */
+.folder_maker .fm_options_view .filter_by_categories .types_list .label {
+  margin-right: 20px;
 }

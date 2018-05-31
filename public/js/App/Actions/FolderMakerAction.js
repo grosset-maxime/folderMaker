@@ -113,6 +113,9 @@ function ($, PM) {
                     folder: '',
                     nbFolders: '',
                     nbFilesPerFolder: '',
+                    filters: {
+                        types: null
+                    },
                     success: null,
                     failure: null,
                     events: {
@@ -147,7 +150,8 @@ function ($, PM) {
                 data: {
                     folder: opts.folder,
                     nbFilesPerFolder: opts.nbFilesPerFolder,
-                    nbFolders: opts.nbFolders
+                    nbFolders: opts.nbFolders,
+                    types: opts.filters.types
                 }
             });
 

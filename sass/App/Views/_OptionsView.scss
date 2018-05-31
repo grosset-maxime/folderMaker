@@ -14,6 +14,10 @@
         justify-content: flex-start;
     }
 
+    .label {
+        user-select: none;
+    }
+
     .title_view {
         font-weight: bold;
         font-size: 1.3em;
@@ -36,7 +40,6 @@
         padding: 8px;
         line-height: 1em;
         width: 100%;
-        cursor: pointer;
 
         &.first {
             padding-top: 18px;
@@ -46,7 +49,8 @@
             padding-bottom: 18px;
         }
 
-        &:hover {
+        &.selectable:hover {
+            cursor: pointer;
             background: #f9f9f9;
             border-radius: 5px;
         }
@@ -97,5 +101,30 @@
 
     .input_check_removeEmptyFloder {
         margin-left: 20px;
+    }
+
+    .filter_by_categories {
+        .input_check {
+            cursor: pointer;
+        }
+
+        .label {
+            margin-right: 30px;
+            margin-left: 3px;
+        }
+
+        .types_list {
+            display: none;
+            overflow: hidden;
+            padding: 8px 10px;
+            margin: 8px 20px;
+            margin-bottom: 0;
+            border-radius: 5px;
+            background: $ORANGE_LIGHT;
+
+            .label {
+                margin-right: 20px;
+            }
+        }
     }
 } // End .ds_options_view

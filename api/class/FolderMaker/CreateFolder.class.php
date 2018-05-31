@@ -48,9 +48,10 @@ class CreateFolder extends Root
 {
     protected $Utils = null;
 
-    protected $folder = '';          // (Mandatory) Folder path.
-    protected $nbFilesPerFolder = 0; // (optional) Nb files per folder.
-    protected $nbFolders = 0;        // (Optional) Nb folders.
+    protected $folder = '';           // (Mandatory) Folder path.
+    protected $nbFilesPerFolder = 0;  // (optional) Nb files per folder.
+    protected $nbFolders = 0;         // (Optional) Nb folders.
+    protected $typesToKeep = array(); // (Optional) Types file to process. ('.jpg', '.png', '.mp4', ...)
 
     protected $files = array();
 
@@ -261,6 +262,7 @@ class CreateFolder extends Root
         $files = array();
         $dir;
         $file;
+        $typesToKeep = $this->typesToKeep;
 
         try {
             $dir = new DirectoryIterator($folder);
@@ -279,12 +281,21 @@ class CreateFolder extends Root
 
             $fileName = $file->getFilename();
             $isDir = $file->isDir();
+            $fileExtension = isset(pathinfo($fileName)['extension'])
+                ? strtolower(pathinfo($fileName)['extension'])
+                : '';
 
             if ($file->isDot()
                 || $isDir
                 || preg_match('/^[\.].*/i', $fileName)
                 || preg_match('/^(thumb)(s)?[\.](db)$/i', $fileName)
-                || !$this->Utils->isSupportedFileType($fileName)
+            ) {
+                continue;
+            }
+
+            if (
+                count($typesToKeep)
+                && !in_array($fileExtension, $typesToKeep)
             ) {
                 continue;
             }
@@ -329,6 +340,28 @@ class CreateFolder extends Root
     public function getNbFolders()
     {
         return $this->nbFolders;
+    }
+
+    /**
+     * Setter typesToKeep.
+     *
+     * @param {Array} $typesToKeep : List of types to keep.
+     *
+     * @return null
+     */
+    public function setTypesToKeep($typesToKeep = 0)
+    {
+        $this->typesToKeep = $typesToKeep;
+    }
+
+    /**
+     * Getter typesToKeep.
+     *
+     * @return {Array} typesToKeep.
+     */
+    public function getTypesToKeep()
+    {
+        return $this->typesToKeep;
     }
 
     /**

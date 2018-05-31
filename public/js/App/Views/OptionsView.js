@@ -32,7 +32,10 @@ function ($, PM, Notify, FolderMakerAction) {
         _els = {},
         _notify,
         _hasFocus = false,
-        _isBuilt = false;
+        _isBuilt = false,
+        _imageTypes = ['jpg', 'jpeg', 'gif', 'png', 'bmp'],
+        _videoTypes = ['webm', 'mp4', 'mkv'],
+        _types = _imageTypes.concat(_videoTypes);
 
 
     function _dispNotify (options) {
@@ -75,11 +78,39 @@ function ($, PM, Notify, FolderMakerAction) {
         }
     }
 
+    function _checkInput (input, check) {
+        check = check !== false;
+        input.prop('checked', check);
+    }
+
+    function _toggleImageTypesCheckbox () {
+        var check = _els.checkImagesCategory.prop('checked');
+
+        _els.typesList.find('input').each(function (index, input) {
+            input = $(input);
+            if (_imageTypes.indexOf(input.val()) >= 0) {
+                _checkInput(input, check);
+            }
+        });
+    }
+
+    function _toggleVideoTypesCheckbox () {
+        var check = _els.checkVideosCategory.prop('checked');
+
+        _els.typesList.find('input').each(function (index, input) {
+            input = $(input);
+            if (_videoTypes.indexOf(input.val()) >= 0) {
+                _checkInput(input, check);
+            }
+        });
+    }
+
     function _buildSkeleton () {
         var mainCtn, customFolderCtn, radioNbFilesPerFolder, radioNbFolders,
             footerCtn, btnStart, inputNbFilesPerFolder, inputCustomFolder,
             nbFilesPerFolderCtn, nbFoldersCtn, extractFilesCtn, radioExtractFiles,
-            inputNbFolders, removeEmptyFoldersCheckbox;
+            inputNbFolders, removeEmptyFoldersCheckbox, checkImagesCategory, checkVideosCategory,
+            checkCustomizeCategory, fileCategoriesCtn;
 
         /**
          * @private
@@ -118,11 +149,6 @@ function ($, PM, Notify, FolderMakerAction) {
             }
         }
 
-        function checkInput (input, check) {
-            check = check !== false;
-            input.prop('checked', check);
-        }
-
         function separator () {
             return $('<div>', { 'class': 'separator' });
         }
@@ -144,8 +170,6 @@ function ($, PM, Notify, FolderMakerAction) {
                 }
             }
         });
-
-        mainCtn.css('max-height', _options.root.height() - 160);
 
         footerCtn = _els.footerCtn = $('<div>', {
             'class': 'footer_ctn flex'
@@ -181,7 +205,7 @@ function ($, PM, Notify, FolderMakerAction) {
             'class': 'el_ctn flex first last',
             on: {
                 click: function () {
-                    checkInput(_els.inputCustomFolder);
+                    _checkInput(_els.inputCustomFolder);
                 }
             }
         }).append(
@@ -224,7 +248,7 @@ function ($, PM, Notify, FolderMakerAction) {
             on: {
                 focus: function () {
                     _hasFocus = true;
-                    checkInput(radioNbFilesPerFolder);
+                    _checkInput(radioNbFilesPerFolder);
                 },
                 blur: function () {
                     _hasFocus = false;
@@ -239,10 +263,10 @@ function ($, PM, Notify, FolderMakerAction) {
 
         // Ctn nb files per folder.
         nbFilesPerFolderCtn = $('<div>', {
-            'class': 'el_ctn first',
+            'class': 'el_ctn first selectable',
             on: {
                 click: function () {
-                    checkInput(radioNbFilesPerFolder);
+                    _checkInput(radioNbFilesPerFolder);
                 }
             }
         }).append(
@@ -253,7 +277,7 @@ function ($, PM, Notify, FolderMakerAction) {
                 for: 'nbFilesPerFolderOpts',
                 on: {
                     click: function () {
-                        checkInput(radioNbFilesPerFolder);
+                        _checkInput(radioNbFilesPerFolder);
                     }
                 }
             }),
@@ -278,7 +302,7 @@ function ($, PM, Notify, FolderMakerAction) {
             on: {
                 focus: function () {
                     _hasFocus = true;
-                    checkInput(radioNbFolders);
+                    _checkInput(radioNbFolders);
                 },
                 blur: function () {
                     _hasFocus = false;
@@ -293,10 +317,10 @@ function ($, PM, Notify, FolderMakerAction) {
 
         // Ctn nb folders.
         nbFoldersCtn = $('<div>', {
-            'class': 'el_ctn last',
+            'class': 'el_ctn selectable',
             on: {
                 click: function () {
-                    checkInput(radioNbFolders);
+                    _checkInput(radioNbFolders);
                 }
             }
         }).append(
@@ -307,11 +331,85 @@ function ($, PM, Notify, FolderMakerAction) {
                 for: 'nbFoldersOpts',
                 on: {
                     click: function () {
-                        checkInput(radioNbFolders);
+                        _checkInput(radioNbFolders);
                     }
                 }
             }),
             inputNbFolders
+        );
+
+        fileCategoriesCtn = $('<div>', {
+            'class': 'el_ctn filter_by_categories last',
+        }).append(
+            checkImagesCategory = _els.checkImagesCategory = $('<input>', {
+                id: 'imagesCategoryRadio',
+                'class': 'input_check input_check_categories',
+                type: 'checkbox',
+                on: {
+                    click: _toggleImageTypesCheckbox
+                }
+            }),
+            $('<label>', {
+                'class': 'title label',
+                text: 'Images',
+                on: {
+                    click: function () {
+                        _checkInput(
+                            checkImagesCategory,
+                            !checkImagesCategory.prop('checked')
+                        );
+                        _toggleImageTypesCheckbox();
+                    }
+                }
+            }),
+            checkVideosCategory = _els.checkVideosCategory = $('<input>', {
+                id: 'videosCategoryRadio',
+                'class': 'input_check input_check_categories',
+                type: 'checkbox',
+                on: {
+                    click: _toggleVideoTypesCheckbox
+                }
+            }),
+            $('<label>', {
+                'class': 'title label',
+                text: 'Videos',
+                on: {
+                    click: function () {
+                        _checkInput(
+                            checkVideosCategory,
+                            !checkVideosCategory.prop('checked')
+                        );
+                        _toggleVideoTypesCheckbox();
+                    }
+                }
+            }),
+            checkCustomizeCategory = _els.checkCustomizeCategory = $('<input>', {
+                id: 'customizeCategoryRadio',
+                'class': 'input_check input_check_categories',
+                type: 'checkbox',
+                on: {
+                    click: function () {
+                        _els.typesList.toggle();
+                    }
+                }
+            }),
+            $('<label>', {
+                'class': 'title label',
+                text: 'Customize',
+                on: {
+                    click: function () {
+                        _checkInput(
+                            checkCustomizeCategory,
+                            !checkCustomizeCategory.prop('checked')
+                        );
+                        _els.typesList.toggle();
+                    }
+                }
+            }),
+            _els.typesList = $('<div>', {
+                'class': 'types_list',
+                html: _buildCustomsTypes()
+            })
         );
 
         // Radio extract files.
@@ -329,10 +427,10 @@ function ($, PM, Notify, FolderMakerAction) {
         });
 
         extractFilesCtn = $('<div>', {
-            'class': 'el_ctn first last',
+            'class': 'el_ctn first last selectable',
             on: {
                 click: function () {
-                    checkInput(_els.radioExtractFiles);
+                    _checkInput(_els.radioExtractFiles);
                 }
             }
         }).append(
@@ -343,7 +441,7 @@ function ($, PM, Notify, FolderMakerAction) {
                 for: 'extractFilesRadio',
                 on: {
                     click: function () {
-                        checkInput(radioExtractFiles);
+                        _checkInput(radioExtractFiles);
                     }
                 }
             }),
@@ -353,11 +451,11 @@ function ($, PM, Notify, FolderMakerAction) {
                 text: 'Remove empty sub folders',
                 on: {
                     click: function () {
-                        checkInput(
+                        _checkInput(
                             removeEmptyFoldersCheckbox,
                             !removeEmptyFoldersCheckbox.prop('checked')
                         );
-                        checkInput(radioExtractFiles);
+                        _checkInput(radioExtractFiles);
                     }
                 }
             })
@@ -372,6 +470,7 @@ function ($, PM, Notify, FolderMakerAction) {
             separator(),
             nbFilesPerFolderCtn,
             nbFoldersCtn,
+            fileCategoriesCtn,
             separator(),
             extractFilesCtn,
             separator(),
@@ -449,7 +548,8 @@ function ($, PM, Notify, FolderMakerAction) {
         var nbFilesPerFolder = 0,
             nbFolders = 0,
             inputNbFilesPerFolder = _els.inputNbFilesPerFolder,
-            inputNbFolders = _els.inputNbFolders;
+            inputNbFolders = _els.inputNbFolders,
+            types = [];
 
         if (_isChecked(_els.radioNbFilesPerFolder)) {
 
@@ -463,10 +563,20 @@ function ($, PM, Notify, FolderMakerAction) {
 
         }
 
+        _els.typesList.find('input').each(function (index, input) {
+            input = $(input);
+            if (input.prop('checked')) {
+                types.push(input.val());
+            }
+        });
+
         FolderMakerAction.createFolders({
             folder: options.folder,
             nbFilesPerFolder: nbFilesPerFolder,
             nbFolders: nbFolders,
+            filters: {
+                types: types
+            },
             success: function (json) {
                 _onSuccess(
                     'Folders: ' + json.nbFolders + '<br/>'
@@ -480,6 +590,34 @@ function ($, PM, Notify, FolderMakerAction) {
                 onEnd: _onEnd
             }
         });
+    }
+
+    function _buildCustomsTypes () {
+        var typesEls = [];
+
+        _types.forEach(function (type) {
+            var typeEl = $('<input>', {
+                'class': 'input_check input_check_type',
+                value: type,
+                type: 'checkbox'
+            });
+            var labelEl = $('<label>', {
+                'class': 'title label',
+                text: type,
+                on: {
+                    click: function () {
+                        _checkInput(
+                            typeEl,
+                            !typeEl.prop('checked')
+                        );
+                    }
+                }
+            });
+
+            typesEls.push(typeEl, labelEl);
+        });
+
+        return typesEls;
     }
 
     var View = {
