@@ -97,22 +97,26 @@ div {
 
 /* line 7, ../../sass/base/_uikit.scss */
 .btn.ui-button {
-  background: #FCF3E5;
+  background: #2196f3;
+  color: #eee;
+  border: 1px solid #000;
   transition: 0.1s;
   outline: none;
+  text-transform: uppercase;
 }
 /* line 12, ../../sass/base/_uikit.scss */
 .btn.ui-button.ui-state-hover {
-  background: #FDECD0;
+  background: #0080e9;
+  border: 1px solid #333;
+  text-decoration: underline;
 }
 
 /* line 17, ../../sass/base/_uikit.scss */
 .window {
   border-radius: 4px;
-  background-color: #fff;
-  background-color: rgba(255, 255, 255, 0.96);
-  border: 1px solid #ccc;
-  box-shadow: 2px 2px 8px -3px #aaa;
+  background-color: #111;
+  border: 1px solid #333;
+  box-shadow: 2px 2px 8px -3px #666;
   padding: 20px;
 }
 
@@ -220,14 +224,14 @@ div {
 }
 /* line 56, ../../sass/screen.scss */
 body {
-  background-color: #f8f8f8;
+  background-color: #000;
   font: 14px arial, sans-serif;
   overflow: hidden;
 }
 
 /* line 65, ../../sass/screen.scss */
 .folder_maker {
-  color: #333;
+  color: #ccc;
 }
 /* line 10, ../../sass/App/Views/_MainView.scss */
 .folder_maker.flex {
@@ -335,14 +339,15 @@ body {
   height: 100%;
   line-height: 44px;
   z-index: 400;
-  border-top: 1px solid #dadada;
-  background-color: #fff;
+  border-top: 1px solid #333;
+  background-color: #000;
+  display: none;  
 }
 /* line 17, ../../sass/App/Views/_FooterView.scss */
 .folder_maker .fm_footer_view .app_title {
-  text-shadow: 0 0 9px #777, 0 0 1px #aaa;
+  /* text-shadow: 0 0 9px #777, 0 0 1px #aaa; */
   margin-left: 15px;
-  color: #fff;
+  color: #666;
 }
 /* line 5, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view {
@@ -368,7 +373,7 @@ body {
   text-align: center;
   padding-bottom: 8px;
   width: 100%;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid #333;
 }
 /* line 30, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .footer_ctn {
@@ -396,12 +401,12 @@ body {
 /* line 52, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .el_ctn.selectable:hover {
   cursor: pointer;
-  background: #f9f9f9;
+  background: #222;
   border-radius: 5px;
 }
 /* line 59, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .separator {
-  border: 1px solid #eee;
+  border: 1px solid #333;
   width: 100%;
 }
 /* line 64, ../../sass/App/Views/_OptionsView.scss */
@@ -409,13 +414,15 @@ body {
   width: 80%;
   border-radius: 4px;
   height: 26px;
-  border: 1px solid #ddd;
+  border: 1px solid #333;
   outline: none;
   padding-left: 8px;
+  background-color: #222;
+  color: #eee;
 }
 /* line 72, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .input_folder:focus {
-  border-color: #8bbdeb;
+  /* border-color: #666; */
 }
 /* line 77, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .input_spinner {
@@ -467,9 +474,17 @@ body {
   margin: 8px 20px;
   margin-bottom: 0;
   border-radius: 5px;
-  background: #FCF3E5;
+  background: #222;
 }
 /* line 125, ../../sass/App/Views/_OptionsView.scss */
 .folder_maker .fm_options_view .filter_by_categories .types_list .label {
   margin-right: 20px;
+}
+.ui-spinner.ui-widget.ui-widget-content.ui-corner-all {
+  background: #222;
+  color: #eee;
+  border: 1px solid #333;
+}
+.ui-widget-content .ui-state-default {
+  background: #222;
 }
